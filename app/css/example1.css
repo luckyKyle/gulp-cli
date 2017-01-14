@@ -1,0 +1,18 @@
+.sprite {
+  background-image: url("../images/sprite.png");
+  background-repeat: no-repeat;
+  background-size: 1806px 1485px; }
+
+* {
+  margin: 0;
+  padding: 0; }
+
+body {
+  background: #ccb; }
+
+.testing {
+  width: 14.28571%;
+  height: 105px;
+  background-position: -604px -1035px; }
+
+/*# sourceMappingURL=../maps/example1.css.map */

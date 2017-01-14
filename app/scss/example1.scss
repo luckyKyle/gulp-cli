@@ -1,0 +1,15 @@
+@import './sprite/_sprite';
+* {
+    margin: 0;
+    padding: 0
+}
+
+body {
+    background: #ccb;
+}
+
+.testing {
+    width: percentage(1/7);
+    height: 105px;
+    @include sprite-a1;
+}

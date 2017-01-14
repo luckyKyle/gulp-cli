@@ -1,0 +1,1 @@
+{"version":3,"sources":["print.scss"],"names":[],"mappings":"AAAA;EACE,WAAsB,EACvB","file":"../scss/print.css","sourcesContent":[".print {\n  width: percentage(3/6);\n}"]}

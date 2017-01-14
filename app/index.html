@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gulp Demo</title>
+    <!--build:css css/styles.min.css-->
+    <link rel="stylesheet" href="css/example1.css">
+    <link rel="stylesheet" href="css/example2.css">
+    <!--endbuild-->
+</head>
+
+<body>
+    <section class="print">
+        这个是demo2
+    </section>
+    <section class="testing sprite">
+        这个是demo2
+    </section>
+    <!--生产环境
+    @@include('include/test.html', { "name": "lnv-mobile" } )
+    -->
+    <!--build:js js/main.min.js -->
+    <script src="js/lib/another-library.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/lib/a-library.js"></script>
+    <!-- endbuild -->
+</body>
+
+</html>
