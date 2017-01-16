@@ -1,4 +1,7 @@
-//Gulp Plugins
+
+/*******************************
+             Gulp plugins
+*******************************/
 var gulp = require('gulp'),
     sass = require('gulp-sass'), //sass编译
     autoprefixer = require('gulp-autoprefixer'), //css3前缀
@@ -23,7 +26,9 @@ var gulp = require('gulp'),
     merge = require('merge-stream'), //合并
     usemin = require('gulp-usemin'); //合并静态资源及路由
 
-//Dirs Path
+/*--------------
+      Path
+---------------*/
 var _path = {
     dirs: {
         app: 'app/',
@@ -59,7 +64,10 @@ var _path = {
 // Development Tasks 
 // -----------------
 
-// Start browserSync server
+
+/*--------------
+      Start browserSync server
+---------------*/
 gulp.task('browserSync', function() {
     browserSync({
         server: {
@@ -69,7 +77,9 @@ gulp.task('browserSync', function() {
 });
 
 
-//Sass处理
+/*--------------
+      Sass处理
+---------------*/
 gulp.task('sass', ['clean:css'], function() {
     return gulp.src(_path.app.scss + '**/*.scss') // 输入目录
         .pipe(sourcemaps.init()) //启用sourcemaps
@@ -85,14 +95,18 @@ gulp.task('sass', ['clean:css'], function() {
         .pipe(notify({ message: "SASS任务编译完成" }));
 });
 
-// Watchers
+/*--------------
+      Watchers
+---------------*/
 gulp.task('watch', function() {
     gulp.watch(_path.app.scss + '**/*.scss', ['sass']);
     gulp.watch(_path.dirs.app + '/**/*.html', browserSync.reload);
     gulp.watch(_path.app.js + '**/*.js', browserSync.reload);
 });
 
-//Merge
+/*--------------
+      Merge Static
+---------------*/
 gulp.task('usemin', function() {
     return gulp.src(_path.dirs.dev + '**/*.html')
         .pipe(usemin({
@@ -104,7 +118,9 @@ gulp.task('usemin', function() {
 });
 
 
-// Optimizing JavaScript 
+/*--------------
+     Optimizing JavaScript 
+---------------*/
 gulp.task('minifyJs', function() {
     return gulp.src(_path.app.js + '**/*.js', { base: _path.dirs.app }) //选择合并的JS,'base'确保是同一个目录下
         .pipe(sourcemaps.init()) //启用sourcemaps
@@ -115,7 +131,9 @@ gulp.task('minifyJs', function() {
 });
 
 
-//Optimizing Html
+/*--------------
+     Optimizing Html
+---------------*/
 gulp.task('minifyHtml', function() {
     var options = {
         removeComments: true, //清除HTML注释
@@ -134,7 +152,9 @@ gulp.task('minifyHtml', function() {
         .pipe(notify({ message: 'html压缩完成' })); //提示成功
 });
 
-//字体压缩
+/*--------------
+     Optimizing Fonts
+---------------*/
 gulp.task('minifyFont', function() {
     gulp.src(_path.app.fonts + '*.+(otf|eot|svg|ttf|woff)')
         .pipe(fontmin({}))
@@ -144,7 +164,9 @@ gulp.task('minifyFont', function() {
         }));
 });
 
-// Sprite
+/*--------------
+     Img Sprite
+---------------*/
 gulp.task('sprite', function() {
     var spriteData = gulp.src(_path.app.images + "sprite/**/*.+(png|jpg|jpeg|gif|svg)")
         .pipe(spritesmith({
@@ -162,8 +184,7 @@ gulp.task('sprite', function() {
             progressive: true, // 默认：false 无损压缩jpg图片
             interlaced: true, // 默认：false 隔行扫描gif进行渲染
             multipass: true, // 默认：false 多次优化svg直到完全优化
-            svgoPlugins: [{ removeViewBox: false }],
-            use: [pngquant()] //深度压缩png图片的imagemin插件
+            svgoPlugins: [{ removeViewBox: false }]
         })))
         .pipe(gulp.dest(_path.app.images))
         .pipe(gulp.dest(_path.dev.images));
@@ -176,7 +197,9 @@ gulp.task('sprite', function() {
 
 });
 
-// Clone
+/*--------------
+     Clone
+---------------*/
 gulp.task('fonts:dist', function() {
     return gulp.src(_path.dev.fonts + '**/*')
         .pipe(gulp.dest(_path.dist.fonts));
@@ -188,7 +211,9 @@ gulp.task('images:dist', function() {
 });
 
 
-//MD5 added
+/*--------------
+     MD5 Added
+---------------*/
 gulp.task('rev', function() {
     return gulp.src(_path.dirs.dist + "**/*.html")
         .pipe(rev())
@@ -199,7 +224,9 @@ gulp.task('rev', function() {
 });
 
 
-//include功能
+/*--------------
+     Include Module
+---------------*/
 gulp.task('include', function() {
     return gulp.src(_path.dirs.app + "**/*.html")
         .pipe(fileinclude({
@@ -213,7 +240,9 @@ gulp.task('include', function() {
 });
 
 
-// Cleaning 
+/*--------------
+     Cleaning Something
+---------------*/
 gulp.task('clean:dev', function() {
     return del.sync([_path.dirs.dev + '**/*', '!dev/images']);
 });
@@ -232,6 +261,7 @@ gulp.task('clean:css', function() {
 
 
 // Dev Sequences
+// --------------->
 gulp.task('dev', function(callback) {
     runSequence(
         'clean:dev', ['include', 'sprite', 'sass', 'minifyJs', 'minifyFont'],
@@ -241,7 +271,7 @@ gulp.task('dev', function(callback) {
 });
 
 // Build Sequences
-// ---------------
+// --------------->
 gulp.task('build', function(callback) {
     runSequence(
         'clean:dist', ['usemin', 'images:dist', 'fonts:dist'], 'rev', 'minifyHtml',
@@ -250,6 +280,7 @@ gulp.task('build', function(callback) {
 });
 
 // Default Sequences
+// --------------->
 gulp.task('default', function(callback) {
     runSequence(['sass', 'browserSync'], 'watch',
         callback
