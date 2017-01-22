@@ -206,7 +206,7 @@ gulp.task('fonts:dist', function() {
 });
 
 gulp.task('images:dev', function() {
-    return gulp.src(_path.app.images + '*')
+    return gulp.src(_path.app.images + '*.+(png|jpg|jpeg|gif|svg)')
         .pipe(gulp.dest(_path.dev.images));
 });
 
