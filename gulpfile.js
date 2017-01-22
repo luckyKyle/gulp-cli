@@ -205,6 +205,11 @@ gulp.task('fonts:dist', function() {
         .pipe(gulp.dest(_path.dist.fonts));
 });
 
+gulp.task('images:dev', function() {
+    return gulp.src(_path.app.images + '*')
+        .pipe(gulp.dest(_path.dev.images));
+});
+
 gulp.task('images:dist', function() {
     return gulp.src(_path.dev.images + '**/*')
         .pipe(gulp.dest(_path.dist.images));
@@ -264,7 +269,7 @@ gulp.task('clean:css', function() {
 // --------------->
 gulp.task('dev', function(callback) {
     runSequence(
-        'clean:dev', ['include', 'sprite', 'sass', 'minifyJs', 'minifyFont'],
+        'clean:dev', ['include', 'sprite', 'sass', 'minifyJs','images:dev', 'minifyFont'],
         'clean:include',
         callback
     );
