@@ -1,18 +1,2 @@
-.sprite {
-  background-image: url("../images/sprite.png");
-  background-repeat: no-repeat;
-  background-size: 1806px 1485px; }
-
-* {
-  margin: 0;
-  padding: 0; }
-
-body {
-  background: #ccb; }
-
-.testing {
-  width: 14.28571%;
-  height: 105px;
-  background-position: -604px -1035px; }
-
+.sprite{background-image:url(../images/sprite.png);background-repeat:no-repeat;background-size:898px 795px}*{margin:0;padding:0}body{background:#ccb}.testing{width:14.28571%;height:105px;background-position:0 -575px}
 /*# sourceMappingURL=../maps/example1.css.map */

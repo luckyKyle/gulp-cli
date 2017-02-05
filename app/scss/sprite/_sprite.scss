@@ -11,297 +11,89 @@
 // At the bottom of this section, we provide information about the spritesheet itself
 // $spritesheet: width height image $spritesheet-sprites;
 @mixin sprite-a1 {
-    background-position: -604px -1035px;
-}
-
-@mixin sprite-a10 {
-    background-position: 0px -1035px;
-}
-
-@mixin sprite-a10s {
-    background-position: -906px -1035px;
-}
-
-@mixin sprite-a11 {
     background-position: 0px -575px;
 }
 
-@mixin sprite-a11s {
-    background-position: -303px 0px;
-}
-
-@mixin sprite-a1s {
-    background-position: -1212px 0px;
-}
-
-@mixin sprite-a2 {
-    background-position: -1208px -1150px;
-}
-
-@mixin sprite-a2s {
-    background-position: -302px -920px;
-}
-
-@mixin sprite-a3 {
-    background-position: -303px -115px;
-}
-
-@mixin sprite-a3s {
-    background-position: 0px -230px;
-}
-
-@mixin sprite-a4 {
-    background-position: -303px -230px;
-}
-
-@mixin sprite-a4s {
-    background-position: 0px -345px;
-}
-
-@mixin sprite-a5 {
-    background-position: 0px -1265px;
-}
-
-@mixin sprite-a5s {
-    background-position: -906px -1380px;
-}
-
-@mixin sprite-a6 {
-    background-position: -908px -805px;
-}
-
-@mixin sprite-a6s {
-    background-position: 0px -920px;
-}
-
-@mixin sprite-a7 {
-    background-position: -303px -345px;
-}
-
-@mixin sprite-a7s {
-    background-position: 0px -460px;
-}
-
-@mixin sprite-a8 {
-    background-position: -303px -460px;
-}
-
-@mixin sprite-a8s {
+@mixin sprite-a10 {
     background-position: -606px 0px;
 }
 
-@mixin sprite-a9 {
-    background-position: -1212px -115px;
+@mixin sprite-a10s {
+    background-position: -302px -575px;
 }
 
-@mixin sprite-a9s {
-    background-position: -1212px -805px;
+@mixin sprite-a1s {
+    background-position: -604px -575px;
 }
 
-@mixin sprite-b1 {
-    background-position: -1212px -920px;
+@mixin sprite-a2 {
+    background-position: -302px -460px;
 }
 
-@mixin sprite-b10 {
-    background-position: -604px -1150px;
-}
-
-@mixin sprite-b10s {
-    background-position: -906px -1150px;
-}
-
-@mixin sprite-b11 {
-    background-position: -606px -115px;
-}
-
-@mixin sprite-b11s {
-    background-position: -606px -230px;
-}
-
-@mixin sprite-b1s {
-    background-position: 0px -1380px;
-}
-
-@mixin sprite-b2 {
-    background-position: -302px -1380px;
-}
-
-@mixin sprite-b2s {
-    background-position: -604px -1380px;
-}
-
-@mixin sprite-b3 {
-    background-position: -606px -345px;
-}
-
-@mixin sprite-b3s {
+@mixin sprite-a2s {
     background-position: -606px -460px;
 }
 
-@mixin sprite-b4 {
+@mixin sprite-a3 {
     background-position: 0px 0px;
 }
 
-@mixin sprite-b4s {
-    background-position: -303px -575px;
-}
-
-@mixin sprite-b5 {
-    background-position: -604px -920px;
-}
-
-@mixin sprite-b5s {
-    background-position: -906px -920px;
-}
-
-@mixin sprite-b6 {
-    background-position: -606px -805px;
-}
-
-@mixin sprite-b6s {
-    background-position: -302px -1035px;
-}
-
-@mixin sprite-b7 {
-    background-position: -606px -575px;
-}
-
-@mixin sprite-b7s {
-    background-position: 0px -690px;
-}
-
-@mixin sprite-b8 {
-    background-position: -303px -690px;
-}
-
-@mixin sprite-b8s {
-    background-position: -606px -690px;
-}
-
-@mixin sprite-b9 {
-    background-position: -1212px -230px;
-}
-
-@mixin sprite-b9s {
-    background-position: -1212px -345px;
-}
-
-@mixin sprite-c1 {
-    background-position: -1212px -460px;
-}
-
-@mixin sprite-c10 {
-    background-position: -1212px -575px;
-}
-
-@mixin sprite-c10s {
-    background-position: -1212px -690px;
-}
-
-@mixin sprite-c11 {
-    background-position: -909px 0px;
-}
-
-@mixin sprite-c11s {
-    background-position: -909px -115px;
-}
-
-@mixin sprite-c1s {
-    background-position: -1212px -1035px;
-}
-
-@mixin sprite-c2 {
-    background-position: 0px -1150px;
-}
-
-@mixin sprite-c2s {
-    background-position: -302px -1150px;
-}
-
-@mixin sprite-c3 {
-    background-position: -909px -230px;
-}
-
-@mixin sprite-c3s {
-    background-position: -909px -345px;
-}
-
-@mixin sprite-c4 {
-    background-position: -909px -460px;
-}
-
-@mixin sprite-c4s {
-    background-position: -909px -575px;
-}
-
-@mixin sprite-c5 {
-    background-position: -302px -1265px;
-}
-
-@mixin sprite-c5s {
-    background-position: -604px -1265px;
-}
-
-@mixin sprite-c6 {
-    background-position: -906px -1265px;
-}
-
-@mixin sprite-c6s {
-    background-position: -1208px -1265px;
-}
-
-@mixin sprite-c7 {
-    background-position: -909px -690px;
-}
-
-@mixin sprite-c7s {
-    background-position: 0px -805px;
-}
-
-@mixin sprite-c8 {
-    background-position: -303px -805px;
-}
-
-@mixin sprite-c8s {
+@mixin sprite-a3s {
     background-position: 0px -115px;
 }
 
-@mixin sprite-c9 {
-    background-position: -1208px -1380px;
+@mixin sprite-a4 {
+    background-position: -303px 0px;
 }
 
-@mixin sprite-c9s {
-    background-position: -1514px 0px;
+@mixin sprite-a4s {
+    background-position: -303px -115px;
 }
 
-@mixin sprite-cry {
-    background-position: -1514px -230px;
+@mixin sprite-a5 {
+    background-position: 0px -460px;
 }
 
-@mixin sprite-hasee {
-    background-position: -1514px -351px;
+@mixin sprite-a5s {
+    background-position: -606px -115px;
 }
 
-@mixin sprite-hongtashan {
-    background-position: -1514px -475px;
+@mixin sprite-a6 {
+    background-position: -606px -230px;
 }
 
-@mixin sprite-konka {
-    background-position: -1633px -475px;
+@mixin sprite-a6s {
+    background-position: -606px -345px;
 }
 
-@mixin sprite-nextYou {
-    background-position: -1514px -115px;
+@mixin sprite-a7 {
+    background-position: 0px -230px;
 }
 
-@mixin sprite-tongrentang {
-    background-position: -1514px -414px;
+@mixin sprite-a7s {
+    background-position: -303px -230px;
+}
+
+@mixin sprite-a8 {
+    background-position: 0px -345px;
+}
+
+@mixin sprite-a8s {
+    background-position: -303px -345px;
+}
+
+@mixin sprite-a9 {
+    background-position: 0px -690px;
+}
+
+@mixin sprite-a9s {
+    background-position: -302px -690px;
 }
 
 .sprite {
     background-image: url('../images/sprite.png');
     background-repeat: no-repeat;
-    background-size: 1806px 1485px;
+    background-size: 898px 795px;
 }
 
 

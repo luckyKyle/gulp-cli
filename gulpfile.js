@@ -1,4 +1,3 @@
-
 /*******************************
              Gulp plugins
 *******************************/
@@ -7,13 +6,12 @@ var gulp = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'), //css3前缀
     sourcemaps = require('gulp-sourcemaps'), //启用
     browserSync = require('browser-sync'), //静态服务器
-    uglify = require('gulp-uglify'), //js压缩
     gulpIf = require('gulp-if'), //判断文件类型做相应动作
     htmlmin = require('gulp-htmlmin'), //html压缩
     cssmin = require('gulp-clean-css'), //css压缩
+    uglify = require('gulp-uglify'), //js压缩
     imagemin = require('gulp-imagemin'), //图片压缩
     fontmin = require('gulp-fontmin'), //字体压缩
-    pngquant = require('imagemin-pngquant'), //图片深度压缩
     rev = require('gulp-rev-append-all'), //MD5戳
     cache = require('gulp-cache'), //缓存图片
     del = require('del'), // del
@@ -50,6 +48,7 @@ var _path = {
         fonts: 'dev/fonts/',
         images: 'dev/images/',
         include: 'dev/include/',
+        maps: 'dev/maps/',
         js: 'dev/js/'
     },
     dist: {
@@ -59,10 +58,6 @@ var _path = {
         js: 'dist/js/'
     }
 };
-
-
-// Development Tasks 
-// -----------------
 
 
 /*--------------
@@ -87,11 +82,10 @@ gulp.task('sass', ['clean:css'], function() {
         .pipe(autoprefixer({
             browsers: 'last 2 versions'
         }))
-        // .pipe(cssmin()) //压缩css
+        .pipe(cssmin()) //压缩css
         .pipe(sourcemaps.write('../maps'))
         .pipe(browserSync.reload({ stream: true })) // 同步更新
         .pipe(gulp.dest(_path.app.css)) // 输出目录
-        .pipe(gulp.dest(_path.dev.css)) // 输出目录
         .pipe(notify({ message: "SASS任务编译完成" }));
 });
 
@@ -109,14 +103,10 @@ gulp.task('watch', function() {
 ---------------*/
 gulp.task('usemin', function() {
     return gulp.src(_path.dirs.dev + '**/*.html')
-        .pipe(usemin({
-            js: [uglify()],
-            css: [cssmin()]
-        }))
+        .pipe(usemin())
         .pipe(gulp.dest(_path.dirs.dist))
         .pipe(notify({ message: "合并静态文件路由完成" })); //提示;
 });
-
 
 /*--------------
      Optimizing JavaScript 
@@ -129,7 +119,6 @@ gulp.task('minifyJs', function() {
         .pipe(gulp.dest(_path.dirs.dev)) //输出至发布环境
         .pipe(notify({ message: "js压缩完成" })); //提示
 });
-
 
 /*--------------
      Optimizing Html
@@ -164,6 +153,22 @@ gulp.task('minifyFont', function() {
         }));
 });
 
+
+/*--------------
+     Optimizing Image
+---------------*/
+gulp.task('minifyImg', function() {
+    gulp.src(_path.app.images + '*.+(png|jpg|jpeg|gif|svg)')
+        .pipe(cache(imagemin({ //压缩未经压缩的图片
+            optimizationLevel: 5, // 默认：3  取值范围：0-7（优化等级）
+            progressive: true, // 默认：false 无损压缩jpg图片
+            interlaced: true, // 默认：false 隔行扫描gif进行渲染
+            multipass: true // 默认：false 多次优化svg直到完全优化
+        })))
+        .pipe(gulp.dest(_path.dev.images));
+});
+
+
 /*--------------
      Img Sprite
 ---------------*/
@@ -179,15 +184,7 @@ gulp.task('sprite', function() {
 
     var imgStream = spriteData.img
         .pipe(buffer())
-        .pipe(cache(imagemin({ //压缩未经压缩的图片
-            optimizationLevel: 5, // 默认：3  取值范围：0-7（优化等级）
-            progressive: true, // 默认：false 无损压缩jpg图片
-            interlaced: true, // 默认：false 隔行扫描gif进行渲染
-            multipass: true, // 默认：false 多次优化svg直到完全优化
-            svgoPlugins: [{ removeViewBox: false }]
-        })))
-        .pipe(gulp.dest(_path.app.images))
-        .pipe(gulp.dest(_path.dev.images));
+        .pipe(gulp.dest(_path.app.images));
 
     var cssStream = spriteData.css
         .pipe(gulp.dest(_path.app.scss + "sprite"))
@@ -196,25 +193,6 @@ gulp.task('sprite', function() {
     return merge(imgStream, cssStream);
 
 });
-
-/*--------------
-     Clone
----------------*/
-gulp.task('fonts:dist', function() {
-    return gulp.src(_path.dev.fonts + '**/*')
-        .pipe(gulp.dest(_path.dist.fonts));
-});
-
-gulp.task('images:dev', function() {
-    return gulp.src(_path.app.images + '*.+(png|jpg|jpeg|gif|svg)')
-        .pipe(gulp.dest(_path.dev.images));
-});
-
-gulp.task('images:dist', function() {
-    return gulp.src(_path.dev.images + '**/*')
-        .pipe(gulp.dest(_path.dist.images));
-});
-
 
 /*--------------
      MD5 Added
@@ -246,6 +224,30 @@ gulp.task('include', function() {
 
 
 /*--------------
+     Clone
+---------------*/
+gulp.task('css:dev', function() {
+    return gulp.src(_path.app.css + '**/*')
+        .pipe(gulp.dest(_path.dev.css));
+});
+
+gulp.task('css:dist', function() {
+    return gulp.src(_path.dev.css + '**/*')
+        .pipe(gulp.dest(_path.dist.css));
+});
+
+gulp.task('fonts:dist', function() {
+    return gulp.src(_path.dev.fonts + '**/*')
+        .pipe(gulp.dest(_path.dist.fonts));
+});
+
+gulp.task('images:dist', function() {
+    return gulp.src(_path.dev.images + '**/*')
+        .pipe(gulp.dest(_path.dist.images));
+});
+
+
+/*--------------
      Cleaning Something
 ---------------*/
 gulp.task('clean:dev', function() {
@@ -260,6 +262,10 @@ gulp.task('clean:include', function() {
     return del.sync([_path.dev.include]);
 });
 
+gulp.task('clean:maps', function() {
+    return del.sync([_path.dev.maps]);
+});
+
 gulp.task('clean:css', function() {
     return del.sync([_path.app.css + '**/*']);
 });
@@ -269,8 +275,7 @@ gulp.task('clean:css', function() {
 // --------------->
 gulp.task('dev', function(callback) {
     runSequence(
-        'clean:dev', ['include', 'sprite', 'sass', 'minifyJs','images:dev', 'minifyFont'],
-        'clean:include',
+        'clean:dev', ['include', 'css:dev', 'minifyImg', 'minifyJs', 'minifyFont'], ['clean:include', 'clean:maps'],
         callback
     );
 });
@@ -279,15 +284,15 @@ gulp.task('dev', function(callback) {
 // --------------->
 gulp.task('build', function(callback) {
     runSequence(
-        'clean:dist', ['usemin', 'images:dist', 'fonts:dist'], 'rev', 'minifyHtml',
+        'clean:dist', 'usemin', ['images:dist', 'fonts:dist'], 'rev', 'minifyHtml',
         callback
     );
 });
 
-// Default Sequences
+// Default Sequences  
 // --------------->
 gulp.task('default', function(callback) {
-    runSequence(['sass', 'browserSync'], 'watch',
+    runSequence('sprite', ['sass', 'browserSync'], 'watch',
         callback
     );
 });
