@@ -82,7 +82,6 @@ gulp.task('sass', ['clean:css'], function() {
         .pipe(autoprefixer({
             browsers: 'last 2 versions'
         }))
-        .pipe(cssmin()) //压缩css
         .pipe(sourcemaps.write('../maps'))
         .pipe(browserSync.reload({ stream: true })) // 同步更新
         .pipe(gulp.dest(_path.app.css)) // 输出目录
@@ -103,21 +102,12 @@ gulp.task('watch', function() {
 ---------------*/
 gulp.task('usemin', function() {
     return gulp.src(_path.dirs.dev + '**/*.html')
-        .pipe(usemin())
+        .pipe(usemin({
+            js: [uglify()],
+            css: [cssmin()]
+        }))
         .pipe(gulp.dest(_path.dirs.dist))
         .pipe(notify({ message: "合并静态文件路由完成" })); //提示;
-});
-
-/*--------------
-     Optimizing JavaScript 
----------------*/
-gulp.task('minifyJs', function() {
-    return gulp.src(_path.app.js + '**/*.js', { base: _path.dirs.app }) //选择合并的JS,'base'确保是同一个目录下
-        .pipe(sourcemaps.init()) //启用sourcemaps
-        .pipe(uglify()) //压缩js
-        .pipe(sourcemaps.write('./maps'))
-        .pipe(gulp.dest(_path.dirs.dev)) //输出至发布环境
-        .pipe(notify({ message: "js压缩完成" })); //提示
 });
 
 /*--------------
@@ -226,9 +216,15 @@ gulp.task('include', function() {
 /*--------------
      Clone
 ---------------*/
+
 gulp.task('css:dev', function() {
     return gulp.src(_path.app.css + '**/*')
         .pipe(gulp.dest(_path.dev.css));
+});
+
+gulp.task('js:dev', function() {
+    return gulp.src(_path.app.js + '**/*')
+        .pipe(gulp.dest(_path.dev.js));
 });
 
 gulp.task('css:dist', function() {
@@ -275,7 +271,7 @@ gulp.task('clean:css', function() {
 // --------------->
 gulp.task('dev', function(callback) {
     runSequence(
-        'clean:dev', ['include', 'css:dev', 'minifyImg', 'minifyJs', 'minifyFont'], ['clean:include', 'clean:maps'],
+        'clean:dev', 'include', ['css:dev', 'js:dev'], ['minifyImg', 'minifyFont'], ['clean:include', 'clean:maps'],
         callback
     );
 });
