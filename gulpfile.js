@@ -135,9 +135,9 @@ gulp.task('minifyHtml', function() {
      Optimizing Fonts
 ---------------*/
 gulp.task('minifyFont', function() {
-    gulp.src(_path.app.fonts + '*.+(otf|eot|svg|ttf|woff)')
+    gulp.src(_path.dev.fonts + '*.+(otf|eot|svg|ttf|woff)')
         .pipe(fontmin({}))
-        .pipe(gulp.dest(_path.dev.fonts))
+        .pipe(gulp.dest(_path.dist.fonts))
         .pipe(notify({
             message: '字体压缩完成'
         }));
@@ -148,14 +148,15 @@ gulp.task('minifyFont', function() {
      Optimizing Image
 ---------------*/
 gulp.task('minifyImg', function() {
-    gulp.src(_path.app.images + '*.+(png|jpg|jpeg|gif|svg)')
+    gulp.src(_path.dev.images + '*.+(png|jpg|jpeg|gif|svg)')
         .pipe(cache(imagemin({ //压缩未经压缩的图片
             optimizationLevel: 5, // 默认：3  取值范围：0-7（优化等级）
             progressive: true, // 默认：false 无损压缩jpg图片
             interlaced: true, // 默认：false 隔行扫描gif进行渲染
             multipass: true // 默认：false 多次优化svg直到完全优化
         })))
-        .pipe(gulp.dest(_path.dev.images));
+        .pipe(gulp.dest(_path.dist.images))
+        .pipe(notify({ message: "图片压缩完成" })); //提示
 });
 
 
@@ -178,7 +179,7 @@ gulp.task('sprite', function() {
 
     var cssStream = spriteData.css
         .pipe(gulp.dest(_path.app.scss + "sprite"))
-        .pipe(notify({ message: "图片压缩完成" })); //提示
+        .pipe(notify({ message: "图片合并完成" })); //提示
 
     return merge(imgStream, cssStream);
 
@@ -227,19 +228,14 @@ gulp.task('js:dev', function() {
         .pipe(gulp.dest(_path.dev.js));
 });
 
-gulp.task('css:dist', function() {
-    return gulp.src(_path.dev.css + '**/*')
-        .pipe(gulp.dest(_path.dist.css));
+gulp.task('fonts:dev', function() {
+    return gulp.src(_path.app.fonts + '**/*')
+        .pipe(gulp.dest(_path.dev.fonts));
 });
 
-gulp.task('fonts:dist', function() {
-    return gulp.src(_path.dev.fonts + '**/*')
-        .pipe(gulp.dest(_path.dist.fonts));
-});
-
-gulp.task('images:dist', function() {
-    return gulp.src(_path.dev.images + '**/*')
-        .pipe(gulp.dest(_path.dist.images));
+gulp.task('images:dev', function() {
+    return gulp.src(_path.app.images + '**/*')
+        .pipe(gulp.dest(_path.dev.images));
 });
 
 
@@ -271,7 +267,7 @@ gulp.task('clean:css', function() {
 // --------------->
 gulp.task('dev', function(callback) {
     runSequence(
-        'clean:dev', 'include', ['css:dev', 'js:dev'], ['minifyImg', 'minifyFont'], ['clean:include', 'clean:maps'],
+        'clean:dev', 'include', ['css:dev', 'js:dev', 'images:dev', 'fonts:dev'], ['clean:include', 'clean:maps'],
         callback
     );
 });
@@ -280,7 +276,7 @@ gulp.task('dev', function(callback) {
 // --------------->
 gulp.task('build', function(callback) {
     runSequence(
-        'clean:dist', 'usemin', ['images:dist', 'fonts:dist'], 'rev', 'minifyHtml',
+        'clean:dist', 'usemin', ['minifyImg', 'minifyFont'], 'rev', 'minifyHtml',
         callback
     );
 });
