@@ -1,4 +1,4 @@
-###一点点前言
+### 一点点前言
 之前用过下面这两款跨平台软件，感觉功能相对比较局限。
 
  - 微信 TmT 团队开发的[weflow](https://weflow.io/)
@@ -8,17 +8,17 @@
 
 >1.  Sass语法编译；
 >2.  静态资源压缩（包含html,css,js以及图片深压缩）；
->3. Css3自动前缀
->4. Image Sprite（图片精灵）
->5. md5后缀添加
->6. 路由及文件合并
->7. **页面模块iclude功能**
->8. 浏览器同步刷新
+>3.  Css3自动前缀
+>4.  Image Sprite（图片精灵）
+>5.  md5后缀添加
+>6.  路由及文件合并
+>7.  **页面模块iclude功能**
+>8.  浏览器同步刷新
 
 这次就是为了实现第7个iclude功能很是花费了一番功夫。
 
 ----
-###首先gulp环境搭建。
+### 首先gulp环境搭建。
 
 1.首先全局安装gulp
 ```
@@ -43,7 +43,7 @@ $ cnpm install
 
 ----
 
-###基本介绍
+### 基本介绍
 
 先来看看目录各个文件目录的作用
 ![](https://p.qlogo.cn/qqmail_head/fFgUJknhibCz7BSqZicGhQH4ejMB2P7yFIgb9tAcAvrau49SGu8y6CS37OctW0edTPpAbQ49B21pQ/0)

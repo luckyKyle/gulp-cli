@@ -1,1 +1,1 @@
-{"version":3,"sources":["example2.scss"],"names":[],"mappings":"AAAA,OACE,MAAA","file":"../scss/example2.css","sourcesContent":[".print {\r\n  width: percentage(3/6);\r\n}"]}
+{"version":3,"sources":["example2.scss"],"names":[],"mappings":"AAAA;EACE,WAAsB,EACvB","file":"../scss/example2.css","sourcesContent":[".print {\r\n  width: percentage(3/6);\r\n}"]}
