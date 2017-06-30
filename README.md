@@ -22,16 +22,16 @@
 
 1.首先全局安装gulp
 ```
-$ npm install --global gulp
+$ npm install gulp -g
 ```
 
 2.建议安装[淘宝镜像cnpm](https://npm.taobao.org/)，相比下载快的不是一点点。
 ```
-$ npm install -g cnpm --registry=https://registry.npm.taobao.org
+$ npm install cnpm --registry=https://registry.npm.taobao.org -g 
 ```
 3.下载hello-gulp'
 ```
-$ git@github.com:kpengWang/hello-gulp.git
+$ git clone git@github.com:kpengWang/hello-gulp.git
 ```
 4.直接安装所有packge里所有插件
 ```

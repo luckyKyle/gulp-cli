@@ -1,30 +1,171 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>Gulp Demo</title>
-    <!--build:css css/styles.min.css-->
-    <link rel="stylesheet" href="css/example1.css">
-    <link rel="stylesheet" href="css/example2.css">
+    <title>这是个主页</title>
+    <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <!--build:css assets/css/styles.min.css-->
     <!--endbuild-->
+    <style>
+        * {
+            margin:0;
+            padding:0;
+        }
+        
+        .table {
+            border-collapse:collapse;
+            border-spacing:0;
+            text-align:left;
+            width:100%;
+        }
+        
+        .table.table-striped tbody tr:nth-of-type(odd) {
+            background:#f8f9fa;
+        }
+        
+        .table.table-hover tbody tr:hover,
+        .table.table-striped tbody tr:nth-of-type(odd):hover {
+            background:#f9f9f9;
+        }
+        
+        .table.table-striped tbody tr:nth-of-type(odd) {
+            background:#f0f1f4;
+        }
+        
+        .table td {
+            border:.1rem solid #d7d7d7;
+            padding:1.5rem 1rem;
+            text-align:center;
+        }
+        
+        .table th {
+            border:.1rem solid #d7d7d7;
+            padding:1.5rem 1rem;
+            text-align:center;
+        }
+        
+        .table th:first-of-type {
+            background: linear-gradient(#fff, #f5faf4);
+        }
+        
+        .table th:not(:first-of-type) {
+            background: linear-gradient(#fff, #f5faf4);
+        }
+        
+        .table tr > td:first-child {
+            background:#0ea432;
+            color:#fff;
+            width:200px;
+        }
+        
+        .table tr > td:first-child:hover {
+            background:#0ea432;
+        }
+        
+        .table a {
+            color:#333;
+            text-decoration:none;
+            display:block;
+            width:100%;
+            height:100%;
+        }
+        
+        .table td:not(:empty):hover {
+            background:#ebebeb;
+        }
+        
+        .table tr:not(:first-of-type):hover {
+            background:#ebebeb;
+        }
+        
+        .table td:hover a {
+            color:#333;
+            font-weight:600;
+        }
+    
+    </style>
 </head>
-
 <body>
-    <section class="print">
-        这个是demo2
-    </section>
-    <section class="testing sprite">
-        这个是demo2
-    </section>
-    <!--生产环境
-    @@include('include/test.html', { "name": "lnv-mobile" } )
-    -->
-    <!--build:js js/main.min.js -->
-    <script src="js/lib/another-library.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/lib/a-library.js"></script>
-    <!-- endbuild -->
-</body>
+<section class="loadPage">
+    
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>目录名</th>
+            <th colspan="8">页面链接</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>业务管理系统框架</td>
+            <td><a href="#">登录页</a></td>
+            <td><a href="#">门户页</a></td>
+            <td><a href="#">待办事项</a></td>
+            <td><a href="#">我的消息</a></td>
+            <td><a href="#">联系人</a></td>
+            <td><a href="#">个人中心</a></td>
+            <td colspan="2"></td>
+        </tr>
+        <tr>
+            <td>订单管理</td>
+            <td><a href="#">线上订单</a></td>
+            <td><a href="#">线下订单</a></td>
+            <td colspan="6"></td>
+        </tr>
+        <tr>
+            <td>案件管理</td>
+            <td><a href="#">立案</a></td>
+            <td><a href="#">商标案件</a></td>
+            <td colspan="6"></td>
+        </tr>
+        <tr>
+            <td>客户管理</td>
+            <td><a href="#">客户档案</a></td>
+            <td colspan="7"></td>
+        </tr>
+        <tr>
+            <td>财务管理</td>
+            <td><a href="#">应收账单</a></td>
+            <td><a href="#">应付账单</a></td>
+            <td><a href="#">收款单</a></td>
+            <td><a href="#">付款单</a></td>
+            <td><a href="#">核销单</a></td>
+            <td><a href="#">利润表</a></td>
+            <td><a href="#">开票管理</a></td>
+            <td><a href="#">财务设置</a></td>
+        </tr>
+        <tr>
+            <td>基础数据</td>
+            <td><a href="#">员工管理</a></td>
+            <td><a href="#">公司管理</a></td>
+            <td><a href="#">组织架构</a></td>
+            <td><a href="#">币种</a></td>
+            <td><a href="#">国家地区</a></td>
+            <td><a href="#">商品或服务配置</a></td>
+            <td><a href="#">业务配置</a></td>
+            <td></td>
+        </tr>
+        
+        <tr>
+            <td>系统数据</td>
+            <td><a href="#">数据词典</a></td>
+            <td><a href="#">系统设置</a></td>
+            <td><a href="#">操作日志</a></td>
+            <td colspan="5"></td>
+        </tr>
+        </tbody>
+    </table>
 
+</section>
+
+<!--生产环境
+      @@include('include/test.html', { "name": "lnv-mobile" } )
+   -->
+<!--build:js assets/js/uglify.min.js -->
+<!-- endbuild -->
+</body>
 </html>
