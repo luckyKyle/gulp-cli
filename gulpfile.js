@@ -26,6 +26,8 @@ const gulp = require("gulp"),
     runSequence = require("run-sequence"), //同步执行gulp任务
     sourcemaps = require('gulp-sourcemaps'), //启用sourcemaps
     spritesmith = require("gulp.spritesmith"), //合并雪碧图
+    ts = require("gulp-typescript"),
+    tsProject = ts.createProject("tsconfig.json"),
     uglify = require("gulp-uglify") // 压缩js
 
 
@@ -83,8 +85,9 @@ gulp.task("jsMin", cb => {
 
     if (DEV) {
         pump([ //压缩编译公共模块
-            gulp.src(sequenceFiles),
+            gulp.src('./src/ts/**/*.ts'),
             sourcemaps.init(),
+            tsProject(),
             plumber({
                 //错误不终止并给出提示
                 errorHandler: notify.onError("Error: <%= error.message %>")
@@ -109,14 +112,18 @@ gulp.task("jsMin", cb => {
     } else {
         pump([ //压缩编译公共模块
             gulp.src(sequenceFiles),
-            babel({ presets: ['env'] }),
+            babel({
+                presets: ['env']
+            }),
             concat('bundle.min.js'), //合并
             uglify(), //压缩操作
             gulp.dest('dist/js')
         ])
         pump([ //压缩业务模块
             gulp.src('src/js/pages/*'),
-            babel({ presets: ['env'] }),
+            babel({
+                presets: ['env']
+            }),
             uglify(),
             gulp.dest('dist/js/pages')
         ], cb)
