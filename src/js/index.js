@@ -1,9 +1,11 @@
-import { getWord, Person } from "./util";
+import { getWord, Person } from "./util"
+import { Api, asdasd } from "./api"
 
-(function(scope) {
-  getWord("ccc");
+getWord("ccc")
 
-  let person = new Person("aaa", 12);
+let person = new Person("bbb", 12)
+let api = new Api
 
-  console.log(person.toString());
-})();
+console.log(asdasd)
+console.log(person.toString())
+console.log(api.print("asdasdasd"))
