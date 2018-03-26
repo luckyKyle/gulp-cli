@@ -100,7 +100,6 @@ gulp.task("es", cb => {
         .pipe(notify("es编译完成"))
 })
 
-
 //雪碧图 图片的名字为a.png 对应的类为.icon-a
 gulp.task("spritesmith", cb => {
     pump(
@@ -128,9 +127,8 @@ gulp.task("copyStatic", cb => {
         gulp.src("src/lib/**/*"),
         gulp.dest("dist/lib")
     ])
-    pump(
+    pump( //迁移图片
         [
-            //迁移图片
             gulp.src(["src/assets/img/*", "!src/assets/img/sprite"]),
             gulp.dest("dist/img"),
             connect.reload(),
@@ -208,7 +206,7 @@ gulp.task("default", () => {
 */
 
 //压缩html
-gulp.task("htmler", cb => {
+gulp.task("htmlMin", cb => {
     const options = {
         removeComments: true, //清除HTML注释
         collapseWhitespace: true, //压缩HTML
@@ -232,7 +230,7 @@ gulp.task("htmler", cb => {
 })
 
 // 压缩css
-gulp.task("csser", cb => {
+gulp.task("cssMin", cb => {
     const options = {
         advanced: false, //类型：Boolean 默认：true [是否开启高级优化（合并选择器等）]
         compatibility: "ie7", //保留ie7及以下兼容写法
@@ -252,7 +250,7 @@ gulp.task("csser", cb => {
 })
 
 // 压缩js
-gulp.task("jser", cb => {
+gulp.task("jsMin", cb => {
     pump(
         [
             gulp.src("dist/js/**/*.js"),
@@ -284,5 +282,5 @@ gulp.task("imageMin", cb => {
 })
 
 gulp.task("build", () => {
-    runSequence(["csser", "jser", "imageMin"], "htmler")
+    runSequence(["cssMin", "jsMin", "imageMin"], "htmlMin")
 })
