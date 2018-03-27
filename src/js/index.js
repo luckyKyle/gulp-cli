@@ -6,6 +6,5 @@ getWord("ccc")
 let person = new Person("bbb", 12)
 let api = new Api
 
-console.log(asdasd)
 console.log(person.toString())
-console.log(api.print("asdasdasd"))
+console.log(api.print("abc"))

@@ -14,19 +14,18 @@ export class Api {
     }
     jsonp(url, data) {
         let def = $.Deferred()
+        const ErrorOk = 10000 //错误码
         $.ajax({
-            url: baseUrl + url,
+            url: this.baseUrl + url,
             type: "get",
             dataType: "jsonp",
             jsonp: "callback",
             data: data
         }).then(res => {
-            if (res.code === 10000) {
-                def.resolve(res)
-            } else {
-                layer.alert(res.msg)
+            if (res.code !== ErrorCode) {
                 def.reject(res)
             }
+            def.resolve(res)
         })
         return def
     }
