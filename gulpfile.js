@@ -182,7 +182,7 @@ gulp.task("server", () => {
     connect.server({
         host: "", //本地host，默认为“loacalhost”
         port: 9001, //端口
-        root: "./", //根指向
+        root: "dist", //根目录
         livereload: true //自动刷新
             // middleware(connect, opt) { //中间件配置
             //     return [
@@ -254,7 +254,7 @@ gulp.task("cssMin", cb => {
         [
             gulp.src("dist/css/main.css"),
             cleanCss(options),
-            rename({ suffix: "min" }),
+            // rename({ suffix: ".min" }),
             gulp.dest("dist/css"),
             notify("css压缩完成")
         ],
