@@ -7,9 +7,9 @@ const PRO = ENV === "build"
 const gulp = require("gulp"),
     autoprefixer = require("gulp-autoprefixer"), //自动添加浏览器前缀
     assign = require("lodash.assign"),
-    babel = require("gulp-babel"), // es6转es5
     babelify = require("babelify"),
-    browserify = require("browserify"), // 模块化编译
+    browserify = require("browserify"), // 模块化编译 
+    buffer = require('vinyl-buffer'),
     cleanCss = require("gulp-clean-css"), //压缩css
     concat = require("gulp-concat"), //合并js
     connect = require("gulp-connect"), //本地服务器 自动刷新
@@ -18,13 +18,14 @@ const gulp = require("gulp"),
     gutil = require('gulp-util'),
     htmlMin = require("gulp-htmlmin"), //压缩html
     imageMin = require("gulp-imagemin"), //压缩图片
-    sass = require("gulp-sass"), // 编译scss
+    merge = require('merge-stream'), //合并流
     notify = require("gulp-notify"), //通知消息
     plumber = require("gulp-plumber"), //错误不终止watch
     proxy = require("http-proxy-middleware"), //本地服务器代理
     pump = require("pump"),
     runSequence = require("run-sequence"), //同步执行gulp任务
     rename = require("gulp-rename"),
+    sass = require("gulp-sass"), // 编译sass
     source = require("vinyl-source-stream"),
     sourcemaps = require("gulp-sourcemaps"), //启用sourcemaps
     spritesmith = require("gulp.spritesmith"), //合并雪碧图
@@ -80,7 +81,6 @@ gulp.task("es", cb => {
     return b.transform(babelify)
         .bundle()
         .on('error', () => {
-
             notify.onError("Error: <%= error.message %>")
                 // let args = Array.prototype.slice.call(arguments)
 
@@ -101,23 +101,28 @@ gulp.task("es", cb => {
 })
 
 //雪碧图 图片的名字为a.png 对应的类为.icon-a
-gulp.task("spritesmith", cb => {
-    pump(
-        [
-            gulp.src("src/assets/img/sprite/**/*"),
-            spritesmith({
-                imgName: "img/sprite.png",
-                cssName: "sprite.scss",
-                padding: 20,
-                algorithm: "binary-tree",
-                cssTemplate: "src/assets/img/sprite/template.css"
-            }),
-            gulp.dest("dist/assets/img"),
-            connect.reload(),
-            notify("图片合并完成")
-        ],
-        cb
-    )
+gulp.task("sprite", cb => {
+    const option = gulp.src("src/assets/img/sprite/**/*.*")
+        .pipe(spritesmith({
+            imgName: 'sprite.png', //生成的图片名
+            cssName: '_sprite.scss', //生成的css文件名
+            padding: 10, // 图标之间的距离
+            algorithm: 'binary-tree', // 图标的排序方式
+            cssTemplate: 'src/style/handlebarsInheritance.scss.handlebars' // 模板
+        }))
+
+    // 合并图片
+    const imgStream = option.img
+        .pipe(buffer()) //合并
+        .pipe(gulp.dest("src/assets/img"))
+
+    // 自动生成css
+    const cssStream = option.css
+        .pipe(gulp.dest("src/style"))
+        .pipe(connect.reload())
+        .pipe(notify("图片合并完成"))
+
+    return merge(imgStream, cssStream)
 })
 
 //迁移文件
@@ -127,12 +132,21 @@ gulp.task("copyStatic", cb => {
         gulp.src("src/lib/**/*"),
         gulp.dest("dist/lib")
     ])
-    pump( //迁移图片
+
+
+    pump([
+        //迁移字体
+        gulp.src("src/assets/fonts/**/*"),
+        gulp.dest("dist/assets/fonts")
+    ])
+
+    pump(
+        //迁移图片资源(过滤sprite文件夹)
         [
             gulp.src(["src/assets/img/*", "!src/assets/img/sprite"]),
-            gulp.dest("dist/img"),
+            gulp.dest("dist/assets/img"),
             connect.reload(),
-            notify("第三方资源迁移完成")
+            notify("静态资源迁移完成")
         ],
         cb
     )
@@ -167,7 +181,7 @@ gulp.task("fileinclude", cb => {
 gulp.task("server", () => {
     connect.server({
         host: "", //本地host，默认为“loacalhost”
-        port: 8088, //端口
+        port: 9001, //端口
         root: "./", //根指向
         livereload: true //自动刷新
             // middleware(connect, opt) { //中间件配置
@@ -185,24 +199,23 @@ gulp.task("server", () => {
 gulp.task("watcher", () => {
     gulp.watch("src/js/**/*.js", ["es"])
     gulp.watch("src/style/**/*.scss", ["sass"])
-    gulp.watch("src/assets/img/sprite/**/*", ["spritesmith"])
+    gulp.watch("src/assets/img/sprite/**/*", ["sprite"])
     gulp.watch("src/**/*.html", ["fileinclude"])
     gulp.watch(["src/lib/**/*.*", "src/assets/img/**/*"], ["copyStatic"])
 })
 
 gulp.task("default", () => {
     runSequence(
-        // "spritesmith",
-        ["sass", "es", "fileinclude", "copyStatic"],
+        "sprite", ["sass", "es", "fileinclude", "copyStatic"],
         "watcher",
         "server"
     )
 })
 
 /*
-----------------------------
+---------------------------------------
 以下是生产环境 资源压缩以及版本号添加
-----------------------------
+---------------------------------------
 */
 
 //压缩html
