@@ -36,8 +36,8 @@ const gulp = require("gulp"),
     开发环境
 -------------------*/
 
-// 删除dist目录
-const DEST = "dist"
+// 删除build目录
+const DEST = "build"
 if (DEV) {
     del.sync([DEST])
 }
@@ -57,7 +57,7 @@ gulp.task("sass", cb => {
                 cascade: false //是否美化属性值 默认：true
             }),
             sourcemaps.write("maps"),
-            gulp.dest("dist/css"),
+            gulp.dest("build/css"),
             connect.reload(),
             notify("css编译完成")
         ],
@@ -95,7 +95,7 @@ gulp.task("es", cb => {
         })
 
     .pipe(source("bundle.js"))
-        .pipe(gulp.dest("./dist/js"))
+        .pipe(gulp.dest("./build/js"))
         .pipe(connect.reload())
         .pipe(notify("es编译完成"))
 })
@@ -130,21 +130,21 @@ gulp.task("copyStatic", cb => {
     pump([
         //迁移第三方引用的库或插件
         gulp.src("src/lib/**/*"),
-        gulp.dest("dist/lib")
+        gulp.dest("build/lib")
     ])
 
 
     pump([
         //迁移字体
         gulp.src("src/assets/fonts/**/*"),
-        gulp.dest("dist/assets/fonts")
+        gulp.dest("build/assets/fonts")
     ])
 
     pump(
         //迁移图片资源(过滤sprite文件夹)
         [
             gulp.src(["src/assets/img/*", "!src/assets/img/sprite"]),
-            gulp.dest("dist/assets/img"),
+            gulp.dest("build/assets/img"),
             connect.reload(),
             notify("静态资源迁移完成")
         ],
@@ -160,7 +160,7 @@ gulp.task("fileinclude", cb => {
             prefix: "@@",
             basepath: "@file"
         }),
-        gulp.dest("dist")
+        gulp.dest("build")
     ])
     pump(
         [
@@ -169,7 +169,7 @@ gulp.task("fileinclude", cb => {
                 prefix: "@@",
                 basepath: "@file"
             }),
-            gulp.dest("dist/view"),
+            gulp.dest("build/view"),
             connect.reload(),
             notify("html编译")
         ],
@@ -182,7 +182,7 @@ gulp.task("server", () => {
     connect.server({
         host: "", //本地host，默认为“loacalhost”
         port: 9001, //端口
-        root: "dist", //根目录
+        root: "build", //根目录
         livereload: true //自动刷新
             // middleware(connect, opt) { //中间件配置
             //     return [
@@ -230,12 +230,12 @@ gulp.task("htmlMin", cb => {
         minifyJS: true, //压缩页面JS
         minifyCSS: true //压缩页面CSS
     }
-    pump([gulp.src("dist/index.html"), htmlMin(options), gulp.dest("dist")])
+    pump([gulp.src("build/index.html"), htmlMin(options), gulp.dest("build")])
     pump(
         [
-            gulp.src("dist/view/**/*.html"),
+            gulp.src("build/view/**/*.html"),
             htmlMin(options),
-            gulp.dest("dist/view"),
+            gulp.dest("build/view"),
             notify("html压缩完成")
         ],
         cb
@@ -252,10 +252,10 @@ gulp.task("cssMin", cb => {
     }
     pump(
         [
-            gulp.src("dist/css/main.css"),
+            gulp.src("build/css/main.css"),
             cleanCss(options),
             // rename({ suffix: ".min" }),
-            gulp.dest("dist/css"),
+            gulp.dest("build/css"),
             notify("css压缩完成")
         ],
         cb
@@ -266,10 +266,10 @@ gulp.task("cssMin", cb => {
 gulp.task("jsMin", cb => {
     pump(
         [
-            gulp.src("dist/js/**/*.js"),
+            gulp.src("build/js/**/*.js"),
             uglify(),
             rename({ suffix: "min" }),
-            gulp.dest("./dist/js"),
+            gulp.dest("./build/js"),
             notify("js压缩完成")
         ],
         cb
@@ -287,7 +287,7 @@ gulp.task("imageMin", cb => {
                 interlaced: true, //类型：Boolean 默认：false 隔行扫描gif进行渲染
                 multipass: true //类型：Boolean 默认：false 多次优化svg直到完全优化
             }),
-            gulp.dest("dist/img"),
+            gulp.dest("build/img"),
             notify("img压缩完成")
         ],
         cb
