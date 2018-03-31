@@ -80,24 +80,20 @@ gulp.task("es", cb => {
     return b.transform(babelify)
         .bundle()
         .on('error', () => {
-            notify.onError("Error: <%= error.message %>")
+            let args = Array.prototype.slice.call(arguments)
+            //向通知中心发送错误通知
+            notify.onError({
+                title: "Compile Error",
+                message: "<%= error.message %>"
+            }).apply(this, args)
 
-            // let args = Array.prototype.slice.call(arguments)
-
-            /* //Send error to notification center with gulp-notify*/
-            // notify.onError({
-            //     title: "Compile Error",
-            //     message: "<%= error.message %>"
-            // }).apply(this, args)
-
-            /* //Keep gulp from hanging on this task*/
-            // this.emit('end')
+            //防止报错终止
+            this.emit('end')
         })
         .pipe(source("bundle.js"))
         .pipe(gulp.dest("build/js"))
         .pipe(connect.reload())
         .pipe(notify("es编译完成"))
-
 })
 
 //雪碧图 图片的名字为a.png 对应的类为.icon-a
