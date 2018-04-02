@@ -3,7 +3,7 @@ const ENV = process.env.NODE_ENV
 const DEV = ENV === "dev"
 const PRO = ENV === "build"
 
-// 依赖
+//Gulp 依赖
 const gulp = require("gulp"),
     autoprefixer = require("gulp-autoprefixer"), //自动添加css浏览器前缀
     babelify = require("babelify"), // es6转es5
@@ -31,12 +31,22 @@ const gulp = require("gulp"),
     uglify = require("gulp-uglify"),
     watchify = require("watchify") // 压缩js
 
-/*--------------------
-    开发环境
--------------------*/
+//Rollup 依赖
+const rollup = require('rollup'),
+    babel = require('rollup-plugin-babel'),
+    resolve = require('rollup-plugin-node-resolve'),
+    commonjs = require('rollup-plugin-commonjs'), //node_modules中的包大部分都是commonjs格式的，要在rollup中使用必须先转为ES6语法
+    json = require('rollup-plugin-json'),
+    replace = require('rollup-plugin-replace')
+
+
+const DEST = "build"
+    /*--------------------
+        开发环境
+    -------------------*/
 
 // 删除build目录
-const DEST = "build"
+
 if (DEV) {
     del.sync([DEST])
 }
@@ -65,7 +75,7 @@ gulp.task("sass", cb => {
 })
 
 //编译JS
-gulp.task("es", cb => {
+gulp.task("es2", cb => {
     // 入口文件
     const entriesFiles = ["./src/js/main.js"]
 
@@ -76,8 +86,6 @@ gulp.task("es", cb => {
     }
     const opts = Object.assign({}, watchify.args, customOpts)
     const b = watchify(browserify(opts))
-
-    const caches = {}
 
     return b.transform(babelify)
         .bundle()
@@ -91,7 +99,50 @@ gulp.task("es", cb => {
         .pipe(notify("es编译完成"))
 })
 
+//编译JS
+gulp.task("es", async cb => {
+    // 入口文件
+    const input = "./src/js/main.js"
+    const entriesFiles = ["./src/js/main.js", "./src/js/moudules/a.js"]
 
+    const bundle = await rollup.rollup({
+        input: "./src/js/main.js",
+        plugins: [
+            resolve({
+                jsnext: true, // 该属性是指定将Node包转换为ES2015模块
+                // main 和 browser 属性将使插件决定将那些文件应用到bundle中
+                main: true, // Default: true 
+                browser: true // Default: false
+            }),
+            commonjs(),
+            json(),
+            babel({
+                exclude: 'node_modules/**' // 排除node_modules 下的文件
+            }),
+            replace({
+                ENV: JSON.stringify(process.env.NODE_ENV || 'development')
+            })
+        ]
+    })
+
+    await bundle.write({
+        entry: entriesFiles,
+        file: './build/js/bundle.js', // 输出文件
+        format: 'umd',
+        name: 'bundle', //umd或iife模式下，若入口文件含 export，必须加上该属性,将作为全局变量挂在window下
+        sourcemap: true,
+        external: ['lodash'], //告诉rollup不要将此lodash打包，而作为外部依赖
+        global: {
+            'jquery': '$' //告诉rollup 全局变量$即是jquery
+        }
+    })
+
+
+    return gulp.src("./build/js/bundle.js")
+        .pipe(gulp.dest("build/js"))
+        .pipe(connect.reload())
+        .pipe(notify("es编译完成"))
+})
 
 //雪碧图 图片的名字为a.png 对应的类为.icon-a
 gulp.task("sprite", cb => {
