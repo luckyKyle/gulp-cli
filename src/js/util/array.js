@@ -50,11 +50,11 @@ export const difference = (a, b) => { const s = new Set(b); return a.filter(x =>
 /**
  * Usage: 将数组块划分为指定大小的较小数组
  * @param {需要传入的数组} arr 
- * @param {指定大小} size 
+ * @param {指定粒度长度} length 
  * Example: chunk([1,2,3,4,5], 2) -> [[1,2],[3,4],[5]]
  */
-export const chunk = (arr, size) =>
-    Array.from({ length: Math.ceil(arr.length / size) }, (v, i) => arr.slice(i * size, i * size + size))
+export const chunk = (arr, length) =>
+    Array.from({ length: Math.ceil(arr.length / length) }, (v, i) => arr.slice(i * length, i * length + length))
 
 /**
  * Usage: 数组去重，返回数组的所有不同值
@@ -63,3 +63,42 @@ export const chunk = (arr, size) =>
  * Example: distinctValuesOfArray([1,2,2,3,4,4,5]) -> [1,2,3,4,5]
  */
 export const distinctValuesOfArray = arr => [...new Set(arr)]
+
+/**
+ * Usage: 数组筛选，返回满足某个指定条件
+ * @param {需要传入的数组} arr
+ * @param {需要满足的条件} func
+ * @return 返回一个数组，包含满足指定条件的条件
+ * Example:  dropElements([1, 2, 3, 4], n => n >= 3) -> [3,4]
+ */
+export const dropElements = (arr, func) => {
+    return arr.filter(func)
+}
+
+
+/**
+ * Usage: 返回数组中的每个第 n 个元素
+ * @param {需要传入的数组} arr
+ * @param {指定的除数} nth
+ * @return 返回一个数组，包含满足被二参整除
+ * Example:  everyNth([1,2,3,4,5,6], 2) -> [ 1, 3, 5 ]
+ */
+export const everyNth = (arr, nth) => arr.filter((e, i) => i % nth === 0)
+
+/**
+ * Usage: 筛选出数组中的唯一值。
+ * @param {需要传入的数组} arr
+ * @return 返回一个数组，包含满足指定条件的条件
+ * Example: filterNonUnique([1,2,2,3,4,4,5]) -> [1,3,5]
+ */
+export const filterNonUnique = arr => arr.filter(i => arr.indexOf(i) === arr.lastIndexOf(i))
+
+
+/**
+ * Usage: 拼合一个二维数组。
+ * @param {需要传入的数组} arr
+ * @return 返回一个数组，包含满足指定条件的条件
+ * Example: filterNonUnique([1,2,2,3,4,4,5]) -> [1,3,5]
+ */
+// export const filterNonUnique = arr => arr.filter(i => arr.indexOf(i) === arr.lastIndexOf(i))
+

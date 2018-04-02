@@ -67,7 +67,7 @@ gulp.task("sass", cb => {
 //编译JS
 gulp.task("es", cb => {
     // 入口文件
-    const entriesFiles = ["./src/js/index.js"]
+    const entriesFiles = ["./src/js/main.js"]
 
     // 在这里添加自定义 browserify 选项
     const customOpts = {
@@ -77,24 +77,21 @@ gulp.task("es", cb => {
     const opts = Object.assign({}, watchify.args, customOpts)
     const b = watchify(browserify(opts))
 
+    const caches = {}
+
     return b.transform(babelify)
         .bundle()
-        .on('error', () => {
-            let args = Array.prototype.slice.call(arguments)
-            //向通知中心发送错误通知
-            notify.onError({
-                title: "Compile Error",
-                message: "<%= error.message %>"
-            }).apply(this, args)
-
-            //防止报错终止
-            this.emit('end')
-        })
+        .on('error', gutil.log.bind(gutil, 'Browserify Error'))
         .pipe(source("bundle.js"))
+        .pipe(buffer()) // 可选项，如果你不需要缓存文件内容，就删除
+        .pipe(sourcemaps.init({ loadMaps: true })) //从 browserify 文件载入 map，如果你不需要 sourcemaps，就删除
+        .pipe(sourcemaps.write('./')) // 写入 .map 文件
         .pipe(gulp.dest("build/js"))
         .pipe(connect.reload())
         .pipe(notify("es编译完成"))
 })
+
+
 
 //雪碧图 图片的名字为a.png 对应的类为.icon-a
 gulp.task("sprite", cb => {
@@ -119,7 +116,7 @@ gulp.task("sprite", cb => {
 
     // 自动生成css
     const cssStream = spriteStream.css
-        .pipe(gulp.dest("src/style"))
+        .pipe(gulp.dest("src/style/common"))
         .pipe(connect.reload())
         .pipe(notify("图片合并完成"))
 

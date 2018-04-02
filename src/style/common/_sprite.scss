@@ -1,4 +1,5 @@
 .icon-a5:before {
+        content:"";
         display: inline-block;
         background-image: url(sprite.png);
         background-position: 0px 0px;
@@ -6,6 +7,7 @@
         height: 200px;
     }
 .icon-a6:before {
+        content:"";
         display: inline-block;
         background-image: url(sprite.png);
         background-position: -210px 0px;
@@ -13,6 +15,7 @@
         height: 200px;
     }
 .icon-a7:before {
+        content:"";
         display: inline-block;
         background-image: url(sprite.png);
         background-position: 0px -210px;
