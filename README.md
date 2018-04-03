@@ -6,14 +6,33 @@
 
 修修补补了几天终于把gulp搭建起来了，这次终于像样了些，至少比前面两款工具拓展了不少，gulp的强大之处不用多说，非常值得把玩。先来看看这次主要实现了哪些功能吧！
 
->1.  Sass语法编译；
->2.  静态资源压缩（包含html,css,js以及图片深压缩）；
->3.  Css3自动前缀
->4.  Image Sprite（图片精灵）
->5.  md5后缀添加
->6.  路由及文件合并
->7.  **页面模块iclude功能**
->8.  浏览器同步刷新
+>1. Sass语法编译；
+>
+>2. 静态资源压缩（包含html,css,js以及图片深压缩）；
+>
+>3. Css3自动前缀
+>
+>4. Image Sprite（图片精灵）
+>
+>5. md5后缀添加
+>
+>6. 路由及文件合并
+>
+>7. **页面模块iclude功能**
+>
+>8. 热更新
+>
+>9. 开启本地服务器
+>
+>10. Proxy接口代理
+>
+>11. ES6编译ES5
+>
+>12. ESLint 实时监听
+>
+>13. rollup的tree-shaking
+>
+>    ​
 
 这次就是为了实现第7个iclude功能很是花费了一番功夫。
 
@@ -41,9 +60,17 @@ $ cnpm install
 >1.“--global”可以简写为“-g”
 >2. "install"  可以直接用一个“i”代替
 
+5.走起！
+```
+$ npm run dev
+```
 ----
+
+6.  如果需要压缩以及更换资源md5
+```
+$ npm run build
+```
 
 ### 基本介绍
 
 先来看看目录各个文件目录的作用
-![](https://p.qlogo.cn/qqmail_head/fFgUJknhibCz7BSqZicGhQH4ejMB2P7yFIgb9tAcAvrau49SGu8y6CS37OctW0edTPpAbQ49B21pQ/0)

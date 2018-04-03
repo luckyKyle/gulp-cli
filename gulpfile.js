@@ -308,7 +308,6 @@ gulp.task('cssMin', cb => {
         [
             gulp.src('build/css/main.css'),
             cleanCss(option),
-
             gulp.dest('build/css'),
             notify('css压缩完成')
         ],
