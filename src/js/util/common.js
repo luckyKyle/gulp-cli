@@ -12,7 +12,7 @@ export const scrollToTop = () => {
 
 /**
  * Usage:复制到黏贴版
- * @param {传入字符串对应} str 
+ * @param {传入字符串对应} str
  * Example: copyToClipboard('success!')
  */
 export const copyToClipboard = str => {
@@ -35,8 +35,8 @@ export const copyToClipboard = str => {
 
 /**
  * Usage: 定时器防抖动
- * @param {回调函数} fn 
- * @param {延时时长} ms 
+ * @param {回调函数} fn
+ * @param {延时时长} ms
  * Example:  window.addEventListener( 'resize', debounce(() => { console.log(window.innerWidth) console.log(window.innerHeight) }, 250) )
  */
 export const debounce = (fn, ms = 0) => {
@@ -49,7 +49,7 @@ export const debounce = (fn, ms = 0) => {
 
 /**
  * Usage: 获取url上的参数
- * @param {需要传入的url} url 
+ * @param {需要传入的url} url
  * @return Object  {key:value}
  * Example: getURLParameters('http://url.com/page?name=Adam&surname=Kyle') -> {name: 'Adam', surname: 'Kyle'}
  */
@@ -60,7 +60,7 @@ export const getURLParameters = url =>
 
 /**
  * Usage: promisify
- * @param {} func 
+ * @param {} func
  * @return Object  {}
  * Example: const delay = promisify((d, cb) => setTimeout(cb, d))
             delay(2000).then(() => console.log('Hi!'))  -> Promise resolves after 2s
