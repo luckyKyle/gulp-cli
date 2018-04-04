@@ -220,7 +220,7 @@ gulp.task('fileinclude', cb => {
     ])
     pump(
         [
-            gulp.src(['src/view/**/*.html']),
+            gulp.src(['src/view/**/*']),
             fileinclude({
                 prefix: '@@',
                 basepath: '@file'
@@ -253,11 +253,11 @@ gulp.task('server', () => {
 
 // 监听热更新
 gulp.task('watcher', () => {
-    gulp.watch('src/js/**/*.js', ['es'])
-    gulp.watch('src/style/**/*.scss', ['sass'])
-    gulp.watch('src/assets/img/sprite/**/*', ['sprite'])
-    gulp.watch('src/**/*.html', ['fileinclude'])
-    gulp.watch(['src/lib/**/*.*', 'src/assets/img/**/*'], ['copyStatic'])
+    gulp.watch('src/js/**', ['es'])
+    gulp.watch('src/style/**', ['sass'])
+    gulp.watch('src/assets/img/sprite/**', ['sprite'])
+    gulp.watch('src/**', ['fileinclude'])
+    gulp.watch(['src/lib/**', 'src/assets/img/**'], ['copyStatic'])
 })
 
 /*
@@ -286,7 +286,7 @@ gulp.task('htmlMin', cb => {
     ])
     pump(
         [
-            gulp.src('build/view/**/*.html'),
+            gulp.src('build/view/**/*'),
             htmlMin(option),
             rev(),
             gulp.dest('build/view'),
@@ -321,7 +321,7 @@ gulp.task('jsMin', cb => {
         [
             gulp.src('build/js/**/*.js'),
             uglify(),
-            gulp.dest('./build/js'),
+            gulp.dest('build/js'),
             notify('js压缩完成')
         ],
         cb
@@ -332,14 +332,14 @@ gulp.task('jsMin', cb => {
 gulp.task('imageMin', cb => {
     pump(
         [
-            gulp.src('src/assets/img/*.{png,jpg,gif,ico}'),
+            gulp.src('src/assets/img/**'),
             imageMin({
                 optimizationLevel: 5, // 类型：Number  默认：3  取值范围：0-7（优化等级）
                 progressive: true, // 类型：Boolean 默认：false 无损压缩jpg图片
                 interlaced: true, // 类型：Boolean 默认：false 隔行扫描gif进行渲染
                 multipass: true // 类型：Boolean 默认：false 多次优化svg直到完全优化
             }),
-            gulp.dest('build/img'),
+            gulp.dest('build/assets/img'),
             notify('img压缩完成')
         ],
         cb
