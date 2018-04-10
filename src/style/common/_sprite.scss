@@ -6,7 +6,7 @@
         width: 200px;
         height: 200px;
     }
-.icon-a6:before {
+.icon-a6.1:before {
         content:"";
         display: inline-block;
         background-image: url(sprite.png);
@@ -14,11 +14,19 @@
         width: 200px;
         height: 200px;
     }
-.icon-a7:before {
+.icon-a6:before {
         content:"";
         display: inline-block;
         background-image: url(sprite.png);
         background-position: 0px -210px;
+        width: 200px;
+        height: 200px;
+    }
+.icon-a7:before {
+        content:"";
+        display: inline-block;
+        background-image: url(sprite.png);
+        background-position: -210px -210px;
         width: 200px;
         height: 200px;
     }
