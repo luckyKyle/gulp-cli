@@ -6,7 +6,9 @@ let a = { a1: '111', a2: 222 }
 let b = { b1: 333, b2: 444 }
 let c = Object.assign(a, b)
 
-console.log(filterNonUnique([1, 2, 2, 3, 4, 4, 5, 6, 7, 9, 8]))
+// console.log(filterNonUnique([1, 2, 2, 3, 4, 4, 5, 6, 7, 9, 8]))
+
+console.log(typeof filterNonUnique + 'bbb')
 
 let btn1 = document.querySelector('#btn1')
 let btn2 = document.querySelector('#btn2')

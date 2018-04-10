@@ -7,14 +7,11 @@ Gulp 依赖
 ************/
 const gulp = require('gulp')
 const autoprefixer = require('gulp-autoprefixer') // 自动添加css浏览器前缀
-    // const babelify = require('babelify') // es6转es5
-    // const browserify = require('browserify') // 模块化编译
 const buffer = require('vinyl-buffer')
 const cleanCss = require('gulp-clean-css') // 压缩css
 const connect = require('gulp-connect') // 本地服务器 自动刷新
 const del = require('del') // 删除文件
 const fileinclude = require('gulp-file-include') // 导入html公共部分
-    // const gutil = require('gulp-util')
 const htmlMin = require('gulp-htmlmin') // 压缩html
 const imageMin = require('gulp-imagemin') // 压缩图片
 const merge = require('merge-stream') // 合并流
@@ -24,11 +21,9 @@ const pump = require('pump')
 const rev = require('gulp-rev-append') // 添加版本号
 const runSequence = require('run-sequence') // 同步执行gulp任务
 const sass = require('gulp-sass') // 编译sass
-    // const source = require('vinyl-source-stream') // 常规读取流，需要把读取流转换为 vinyl 文件对象,可以不再使用gulp-rename
 const sourcemaps = require('gulp-sourcemaps') // 启用sourcemaps
 const spritesmith = require('gulp.spritesmith') // 合并雪碧图
 const uglify = require('gulp-uglify')
-    // const watchify = require('watchify') // 压缩js
 
 /************
  Rollup 依赖
@@ -41,13 +36,13 @@ const eslint = require('rollup-plugin-eslint')
 const json = require('rollup-plugin-json')
 const replace = require('rollup-plugin-replace')
 
-const DEST = 'build'
+const DEST = 'dist'
 
 /* --------------------
     开发环境
 ------------------- */
 
-// 删除build目录
+// 删除dist目录
 
 if (DEV) {
     del.sync([DEST])
@@ -68,7 +63,7 @@ gulp.task('sass', cb => {
                 cascade: false // 是否美化属性值 默认：true
             }),
             sourcemaps.write('maps'),
-            gulp.dest('build/css'),
+            gulp.dest('dist/css'),
             connect.reload(),
             notify('css编译完成')
         ],
@@ -77,39 +72,11 @@ gulp.task('sass', cb => {
 })
 
 // 编译JS
-// gulp.task('es2', cb => {
-//     // 入口文件
-//     const entriesFiles = ['./src/js/main.js']
-
-//     // 在这里添加自定义 browserify 选项
-//     const customOpts = {
-//         entries: entriesFiles,
-//         debug: true
-//     }
-//     const opts = Object.assign({}, watchify.args, customOpts)
-//     const b = watchify(browserify(opts))
-
-//     return b.transform(babelify)
-//         .bundle()
-//         .on('error', gutil.log.bind(gutil, 'Browserify Error'))
-//         .pipe(eslint())
-//         .pipe(eslint.format())
-//         .pipe(source('bundle.js'))
-//         .pipe(buffer()) // 可选项，如果你不需要缓存文件内容，就删除
-//         .pipe(sourcemaps.init({ loadMaps: true })) // 从 browserify 文件载入 map，如果你不需要 sourcemaps，就删除
-//         .pipe(sourcemaps.write('./')) // 写入 .map 文件
-//         .pipe(gulp.dest('build/js'))
-//         .pipe(connect.reload())
-//         .pipe(notify('es编译完成'))
-// })
-
-// 编译JS
 gulp.task('es', async cb => {
     // 入口文件
     // const input = './src/js/main.js'
-    const entriesFiles = ['./src/js/main.js', './src/js/moudules/a.js']
-
-    const bundle = await rollup.rollup({
+    // const entriesFiles = ['./src/js/main.js', './src/js/moudules/a.js']
+    const option = {
         input: './src/js/main.js',
         plugins: [
             resolve({
@@ -133,11 +100,11 @@ gulp.task('es', async cb => {
                 ENV: JSON.stringify(process.env.NODE_ENV || 'development')
             })
         ]
-    })
+    }
 
-    await bundle.write({
-        entry: entriesFiles,
-        file: './build/js/bundle.js', // 输出文件
+    const output = {
+        entry: './src/js/main.js',
+        file: './dist/js/bundle.js', // 输出文件
         format: 'umd',
         name: 'bundle', // umd或iife模式下，若入口文件含 export，必须加上该属性,将作为全局变量挂在window下
         sourcemap: true,
@@ -145,10 +112,14 @@ gulp.task('es', async cb => {
         global: {
             'jquery': '$' // 告诉rollup 全局变量$即是jquery
         }
-    })
+    }
 
-    return gulp.src('./build/js/bundle.js')
-        .pipe(gulp.dest('build/js'))
+    const bundle = await rollup.rollup(option)
+
+    await bundle.write(output)
+
+    await gulp.src('dist/js/bundle.js')
+        .pipe(gulp.dest('dist/js'))
         .pipe(connect.reload())
         .pipe(notify('es编译完成'))
 })
@@ -187,20 +158,20 @@ gulp.task('copyStatic', cb => {
     pump([
         // 迁移第三方引用的库或插件
         gulp.src('src/lib/**/*'),
-        gulp.dest('build/lib')
+        gulp.dest('dist/lib')
     ])
 
     pump([
         // 迁移字体
         gulp.src('src/assets/fonts/**/*'),
-        gulp.dest('build/assets/fonts')
+        gulp.dest('dist/assets/fonts')
     ])
 
     pump(
         // 迁移图片资源(过滤sprite文件夹)
         [
             gulp.src(['src/assets/img/*', '!src/assets/img/sprite']),
-            gulp.dest('build/assets/img'),
+            gulp.dest('dist/assets/img'),
             connect.reload(),
             notify('静态资源迁移完成')
         ],
@@ -214,9 +185,9 @@ gulp.task('fileinclude', cb => {
         gulp.src(['src/index.html']),
         fileinclude({
             prefix: '@@',
-            basepath: '@file'
+            basepath: '@file' // 这里是固定格式
         }),
-        gulp.dest('build')
+        gulp.dest(DEST)
     ])
     pump(
         [
@@ -225,7 +196,7 @@ gulp.task('fileinclude', cb => {
                 prefix: '@@',
                 basepath: '@file'
             }),
-            gulp.dest('build/view'),
+            gulp.dest('dist/view'),
             connect.reload(),
             notify('html编译完成')
         ],
@@ -235,20 +206,23 @@ gulp.task('fileinclude', cb => {
 
 //  启动本地服务 并解决跨域
 gulp.task('server', () => {
-    connect.server({
+    const option = {
         host: '', // 本地host，默认为“loacalhost”
         port: 9001, // 端口
-        root: 'build', // 根目录
+        root: DEST, // 根目录
         livereload: true // 自动刷新
-            // middleware(connect, opt) { //中间件配置
-            //     return [
-            //         proxy('/webapi', { //代理配置
-            //             target: 'http://10.10.40.33:8604', //跨域指向
-            //             changeOrigin: true
-            //         })
-            //     ]
-            // }
-    })
+
+        // middleware(connect, opt) { //中间件配置
+        //     return [
+        //         proxy('/webapi', { //代理配置
+        //             target: 'http://10.10.40.33:8604', //跨域指向
+        //             changeOrigin: true
+        //         })
+        //     ]
+        // }
+    }
+
+    connect.server(option)
 })
 
 // 监听热更新
@@ -256,7 +230,7 @@ gulp.task('watcher', () => {
     gulp.watch('src/js/**', ['es'])
     gulp.watch('src/style/**', ['sass'])
     gulp.watch('src/assets/img/sprite/**', ['sprite'])
-    gulp.watch('src/**', ['fileinclude'])
+    gulp.watch('src/**/*.html', ['fileinclude'])
     gulp.watch(['src/lib/**', 'src/assets/img/**'], ['copyStatic'])
 })
 
@@ -279,17 +253,17 @@ gulp.task('htmlMin', cb => {
         minifyCSS: true // 压缩页面CSS
     }
     pump([
-        gulp.src('build/index.html'),
+        gulp.src('dist/index.html'),
         htmlMin(option),
         rev(),
-        gulp.dest('build')
+        gulp.dest('dist')
     ])
     pump(
         [
-            gulp.src('build/view/**/*'),
+            gulp.src('dist/view/**/*'),
             htmlMin(option),
             rev(),
-            gulp.dest('build/view'),
+            gulp.dest('dist/view'),
             notify('html压缩完成')
         ],
         cb
@@ -306,9 +280,9 @@ gulp.task('cssMin', cb => {
     }
     pump(
         [
-            gulp.src('build/css/main.css'),
+            gulp.src('dist/css/main.css'),
             cleanCss(option),
-            gulp.dest('build/css'),
+            gulp.dest('dist/css'),
             notify('css压缩完成')
         ],
         cb
@@ -319,9 +293,9 @@ gulp.task('cssMin', cb => {
 gulp.task('jsMin', cb => {
     pump(
         [
-            gulp.src('build/js/**/*.js'),
+            gulp.src('dist/js/**/*.js'),
             uglify(),
-            gulp.dest('build/js'),
+            gulp.dest('dist/js'),
             notify('js压缩完成')
         ],
         cb
@@ -339,7 +313,7 @@ gulp.task('imageMin', cb => {
                 interlaced: true, // 类型：Boolean 默认：false 隔行扫描gif进行渲染
                 multipass: true // 类型：Boolean 默认：false 多次优化svg直到完全优化
             }),
-            gulp.dest('build/assets/img'),
+            gulp.dest('dist/assets/img'),
             notify('img压缩完成')
         ],
         cb
@@ -350,8 +324,8 @@ gulp.task('default', () => {
     if (DEV) {
         runSequence(
             'sprite', ['sass', 'es', 'fileinclude', 'copyStatic'],
-            'watcher',
-            'server'
+            'server',
+            'watcher'
         )
     } else {
         runSequence(['cssMin', 'jsMin', 'imageMin'], 'htmlMin')

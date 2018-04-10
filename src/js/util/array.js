@@ -1,6 +1,6 @@
 /***************************
  * 处理Array相关的一些常规方法
-***************************/
+ ***************************/
 
 /**
  * Usage: 返回数组中的最大值
@@ -93,9 +93,28 @@ export const everyNth = (arr, nth) => arr.filter((e, i) => i % nth === 0)
 export const filterNonUnique = arr => arr.filter(i => arr.indexOf(i) === arr.lastIndexOf(i))
 
 /**
- * Usage: 拼合一个二维数组。
- * @param {需要传入的数组} arr
- * @return 返回一个数组，包含满足指定条件的条件
- * Example: filterNonUnique([1,2,2,3,4,4,5]) -> [1,3,5]
+ * Usage: 拼合数组。
+ * @param {需要传入的二维数组} arr
+ * @return 返回一个被“打平”的一维数组
+ * Example: flatten([1,[2],3,4]) -> [1,2,3,4]
  */
-// export const filterNonUnique = arr => arr.filter(i => arr.indexOf(i) === arr.lastIndexOf(i))
+export const flatten = arr => arr.reduce((a, v) => a.concat(v), [])
+
+/**
+ * Usage: 将数组向上拼合到指定深度。
+ * @param {需要传入的多维数组} arr
+ * @param {递减, 默认为1} depth
+ * @return 返回一个被“打平”的一维数组
+ * Example: flattenDepth([1,[2],[[[3],4],5]], 2) -> [1,2,[3],4,5]
+ */
+export const flattenDepth = (arr, depth = 1) => depth !== 1 ? arr.reduce((a, v) => a.concat(Array.isArray(v) ? flattenDepth(v, depth - 1) : v), []) : arr.reduce((a, v) => a.concat(v), [])
+
+/**
+ * Usage: 根据给定函数对数组元素进行分组。
+ * @param {需要传入的数组} arr
+ * @param {条件} func
+ * @return 返回一个被“打平”的一维数组
+ * Example1: groupBy([6.1, 4.2, 6.3], Math.floor) -> {4: [4.2], 6: [6.1, 6.3]}
+ * Example2: groupBy(['one', 'two', 'three'], 'length') -> {3: ['one', 'two'], 5: ['three']}
+ */
+export const groupBy = (arr, func) => arr.map(func instanceof Function ? func : val => val[func]).reduce((acc, val, i) => { acc[val] = (acc[val] || []).concat(arr[i]); return acc }, {})
