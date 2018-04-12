@@ -1,6 +1,6 @@
 /***************************
  * 处理Array相关的一些常规方法
-***************************/
+ ***************************/
 
 /**
  * Usage: 返回数组中的最大值
@@ -93,9 +93,9 @@ export const everyNth = (arr, nth) => arr.filter((e, i) => i % nth === 0)
 export const filterNonUnique = arr => arr.filter(i => arr.indexOf(i) === arr.lastIndexOf(i))
 
 /**
- * Usage: 拼合一个二维数组。
+ * Usage: 拼合数组(使用Array.reduce()获取数组中的所有元素和concat()以拼合它们)
  * @param {需要传入的数组} arr
- * @return 返回一个数组，包含满足指定条件的条件
- * Example: filterNonUnique([1,2,2,3,4,4,5]) -> [1,3,5]
+ * @return 返回一个一维数组
+ * Example:flatten([1,[2],3,4]) -> [1,2,3,4]
  */
-// export const filterNonUnique = arr => arr.filter(i => arr.indexOf(i) === arr.lastIndexOf(i))
+export const flatten = arr => arr.reduce((a, v) => a.concat(v), [])
