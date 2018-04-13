@@ -96,6 +96,39 @@ export const filterNonUnique = arr => arr.filter(i => arr.indexOf(i) === arr.las
  * Usage: 拼合一个二维数组。
  * @param {需要传入的数组} arr
  * @return 返回一个数组，包含满足指定条件的条件
- * Example: filterNonUnique([1,2,2,3,4,4,5]) -> [1,3,5]
+ * Example: flatten([1,[2],3,4]) -> [1,2,3,4]
  */
-// export const filterNonUnique = arr => arr.filter(i => arr.indexOf(i) === arr.lastIndexOf(i))
+export const flatten = arr => arr.reduce((a, v) => a.concat(v), [])
+
+/**
+ * Usage: 拼合一个二维数组。
+ * @param {需要传入的数组} arr
+ * @return 返回一个数组，包含满足指定条件的条件
+ * Example: flattenDepth([1,[2],[[[3],4],5]], 2) -> [1,2,[3],4,5]
+ */
+export const flattenDepth = (arr, depth = 1) => depth !== 1 ? arr.reduce((a, v) => a.concat(Array.isArray(v) ? flattenDepth(v, depth - 1) : v), []) : arr.reduce((a, v) => a.concat(v), [])
+
+/**
+ * Usage: 根据给定函数对数组元素进行分组。
+ * @param {需要传入的数组} arr
+ * @param {需要传入的函数} func
+ * @return 返回一个对象，
+ * Example_1: groupBy([6.1, 4.2, 6.3], Math.floor) -> {4: [4.2], 6: [6.1, 6.3]}
+ * Example_2: groupBy(['one', 'two', 'three'], 'length') -> {3: ['one', 'two'], 5: ['three']}
+ */
+export const groupBy = (arr, func) => arr.map(typeof func === 'function' ? func : val => val[func]).reduce((acc, val, i) => { acc[val] = (acc[val] || []).concat(arr[i]); return acc }, {})
+
+/**
+ * Usage: 返回除最后一个数组之外的所有元素。
+ * @param {需要传入的数组} arr
+ * @return initial([1,2,3]) -> [1,2]
+*/
+export const initial = arr => arr.slice(0, -1)
+
+/**
+ * Usage: 返回列表的首位
+ * @param {需要传入的数组} arr
+ * @return head([1,2,3]) -> [1,2]
+ * Example: head([1,2,3]) -> 1
+*/
+export const head = arr => arr[0]
