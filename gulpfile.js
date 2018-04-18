@@ -37,30 +37,30 @@ const json = require('rollup-plugin-json')
 const replace = require('rollup-plugin-replace')
 
 const DEST = 'dist'
-/* -------------
-    开发环境
---------------- */
-// 删除dist目录
+    /* -------------
+        开发环境
+    --------------- */
+    // 删除dist目录
 if (DEV) { del.sync([DEST]) }
 
 // 编译scss
 gulp.task('sass', cb => {
     pump([
-            gulp.src('src/style/main.scss'),
-            sourcemaps.init(),
-            plumber({ // 错误不终止并给出提示
-                errorHandler: notify.onError('Error: <%= error.message %>')
-            }),
-            sass().on('error', sass.logError),
-            autoprefixer({
-                browsers: ['last 5 versions'], // 向下兼容到IE8
-                cascade: false // 是否美化属性值 默认：true
-            }),
-            sourcemaps.write('maps'),
-            gulp.dest('dist/css'),
-            connect.reload(),
-            notify('css编译完成')
-        ], cb)
+        gulp.src('src/style/main.scss'),
+        sourcemaps.init(),
+        plumber({ // 错误不终止并给出提示
+            errorHandler: notify.onError('Error: <%= error.message %>')
+        }),
+        sass().on('error', sass.logError),
+        autoprefixer({
+            browsers: ['last 5 versions'], // 向下兼容到IE8
+            cascade: false // 是否美化属性值 默认：true
+        }),
+        sourcemaps.write('maps'),
+        gulp.dest('dist/css'),
+        connect.reload(),
+        notify('css编译完成')
+    ], cb)
 })
 
 // 编译JS
@@ -98,10 +98,10 @@ gulp.task('es', async cb => {
     await bundle.write({
         entry: entry,
         file: './dist/js/bundle.js', // 输出文件
-        format: 'umd', // umd或iife模式下，若入口文件含 export，必须加上该属性,将作为全局变量挂在window下
-        name: 'bundle',
+        format: 'umd',
+        name: 'bundle', // umd或iife模式下，若入口文件含 export，必须加上该属性,将作为全局变量挂在window下
         sourcemap: true,
-        external: ['lodash'], // 告诉rollup不要将此lodash打包，而作为外部依赖
+        external: ['lodash', 'jquery'], // 告诉rollup不要将此lodash打包，而作为外部依赖
         global: {
             'jquery': '$' // 告诉rollup 全局变量$即是jquery
         }
@@ -148,7 +148,7 @@ gulp.task('sprite', cb => {
 
 // 迁移文件
 gulp.task('copyStatic', cb => {
-     // 迁移第三方引用的库或插件
+    // 迁移第三方引用的库或插件
     pump([
         gulp.src('src/lib/**'),
         gulp.dest('dist/lib')
@@ -162,12 +162,11 @@ gulp.task('copyStatic', cb => {
 
     // 迁移图片资源(过滤sprite文件夹)
     pump([
-            gulp.src(['src/assets/img/*', '!src/assets/img/sprite']),
-            gulp.dest('dist/assets/img'),
-            connect.reload(),
-            notify('静态资源迁移完成')
-        ], cb
-    )
+        gulp.src(['src/assets/img/*', '!src/assets/img/sprite']),
+        gulp.dest('dist/assets/img'),
+        connect.reload(),
+        notify('静态资源迁移完成')
+    ], cb)
 })
 
 // 导入html公共部分
@@ -181,15 +180,15 @@ gulp.task('fileinclude', cb => {
         gulp.dest('dist')
     ])
     pump([
-            gulp.src(['src/view/**']),
-            fileinclude({
-                prefix: '@@',
-                basepath: '@file'
-            }),
-            gulp.dest('dist/view'),
-            connect.reload(),
-            notify('html编译完成')
-        ], cb)
+        gulp.src(['src/view/**']),
+        fileinclude({
+            prefix: '@@',
+            basepath: '@file'
+        }),
+        gulp.dest('dist/view'),
+        connect.reload(),
+        notify('html编译完成')
+    ], cb)
 })
 
 //  启动本地服务 并解决跨域
@@ -263,37 +262,37 @@ gulp.task('cssMin', cb => {
         keepSpecialComments: '*' // 保留所有特殊前缀 当你用autoprefixer生成的浏览器前缀，如果不加这个参数，有可能将会删除你的部分前缀
     }
     pump([
-            gulp.src('dist/css/main.css'),
-            cleanCss(option),
+        gulp.src('dist/css/main.css'),
+        cleanCss(option),
 
-            gulp.dest('dist/css'),
-            notify('css压缩完成')
-        ], cb)
+        gulp.dest('dist/css'),
+        notify('css压缩完成')
+    ], cb)
 })
 
 // 压缩js
 gulp.task('jsMin', cb => {
     pump([
-            gulp.src('dist/js/**'),
-            uglify(),
-            gulp.dest('./dist/js'),
-            notify('js压缩完成')
-        ], cb)
+        gulp.src('dist/js/**/*.js'),
+        uglify(),
+        gulp.dest('./dist/js'),
+        notify('js压缩完成')
+    ], cb)
 })
 
 // 压缩图片
 gulp.task('imageMin', cb => {
     pump([
-            gulp.src('src/assets/img/**'),
-            imageMin({
-                optimizationLevel: 5, // 类型：Number  默认：3  取值范围：0-7（优化等级）
-                progressive: true, // 类型：Boolean 默认：false 无损压缩jpg图片
-                interlaced: true, // 类型：Boolean 默认：false 隔行扫描gif进行渲染
-                multipass: true // 类型：Boolean 默认：false 多次优化svg直到完全优化
-            }),
-            gulp.dest('dist/img'),
-            notify('img压缩完成')
-        ], cb)
+        gulp.src('src/assets/img/**'),
+        imageMin({
+            optimizationLevel: 5, // 类型：Number  默认：3  取值范围：0-7（优化等级）
+            progressive: true, // 类型：Boolean 默认：false 无损压缩jpg图片
+            interlaced: true, // 类型：Boolean 默认：false 隔行扫描gif进行渲染
+            multipass: true // 类型：Boolean 默认：false 多次优化svg直到完全优化
+        }),
+        gulp.dest('dist/img'),
+        notify('img压缩完成')
+    ], cb)
 })
 
 gulp.task('default', () => {
