@@ -46,7 +46,7 @@ if (DEV) { del.sync([DEST]) }
 // 编译scss
 gulp.task('sass', cb => {
     pump([
-        gulp.src('src/style/main.scss'),
+        gulp.src('src/scss/main.scss'),
         sourcemaps.init(),
         plumber({ // 错误不终止并给出提示
             errorHandler: notify.onError('Error: <%= error.message %>')
@@ -59,7 +59,7 @@ gulp.task('sass', cb => {
         sourcemaps.write('maps'),
         gulp.dest('dist/css'),
         connect.reload(),
-        notify('css编译完成')
+        notify('scss编译完成')
     ], cb)
 })
 
@@ -120,7 +120,7 @@ gulp.task('sprite', cb => {
         cssName: '_sprite.scss', // 生成的css文件名
         padding: 10, // 图标之间的距离
         algorithm: 'binary-tree', // 图标的排序方式
-        cssTemplate: 'src/style/handlebarsInheritance.scss.handlebars' // sprite输出模板
+        cssTemplate: 'src/scss/handlebarsInheritance.scss.handlebars' // sprite输出模板
     }
 
     const spriteStream = pump([
@@ -138,7 +138,7 @@ gulp.task('sprite', cb => {
     // 输出css
     const cssStream = pump([
         spriteStream.css,
-        gulp.dest('src/style/common'),
+        gulp.dest('src/scss/common'),
         connect.reload(),
         notify('图片合并完成')
     ])
@@ -213,7 +213,7 @@ gulp.task('server', () => {
 // 监听热更新
 gulp.task('watcher', () => {
     gulp.watch('src/js/**', ['es'])
-    gulp.watch('src/style/**', ['sass'])
+    gulp.watch('src/scss/**', ['sass'])
     gulp.watch('src/assets/img/sprite/**', ['sprite'])
     gulp.watch('src/**/*.html', ['fileinclude'])
     gulp.watch(['src/lib/**', 'src/assets/img/**'], ['copyStatic'])
