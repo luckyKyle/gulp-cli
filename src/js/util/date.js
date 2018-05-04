@@ -3,19 +3,19 @@
 ***************************/
 
 /**
- * Usage: 时间格式的快速获取 HH:MM:SS
+ *  时间格式的快速获取 HH:MM:SS
  * @param {传入日期对象} str
  * Example: getColonTimeFromDate(new Date()) -> "18:04:00"
  */
-export const getColonTimeFromDate = date => date.toTimeString().slice(0, 8)
+export const getColonTimeFromDate = (date = new Date()) => date.toTimeString().slice(0, 8)
 
 /**
- * Usage: 返回两个日期之间的差异 (以天为值)。
+ *  返回两个日期之间的差异 (以天为值)。
  * "计算Date对象之间的差异 (以天为单位)。"
  * @param {传入日期对象} obj
- * Example: getDaysDiffBetweenDates(new Date("2017-12-13"), new Date("2017-12-22")) -> 9
+ * Example: getDaysDiffBetweenDates('2018-05-05', '2018-05-14') -> 9
  */
-export const getDaysDiffBetweenDates = (dateInitial, dateFinal) => (dateFinal - dateInitial) / (1000 * 3600 * 24)
+export const getDaysDiffBetweenDates = (dateInitial, dateFinal) => (new Date(dateFinal) - new Date(dateInitial)) / (1000 * 3600 * 24)
 
 /**
  * 十位补零
@@ -25,11 +25,11 @@ export const getDaysDiffBetweenDates = (dateInitial, dateFinal) => (dateFinal - 
 export const padTime = (num) => num < 10 ? '0' + num : num
 
 /**
- * Usage: 将时间戳转换为日期
+ *  将时间戳转换为日期
  * "使用Date(), 将时间戳转换转换为可读格式)."
  * @param {传入的时间戳} timestamp
  * @param {布尔值是否需要时钟} needTime
- * @param {返回的格式 (yyyy-mm-dd或者dd/mm/yyyy )} type
+ * @param {返回的格式 (1:yyyy-mm-dd或者2: dd/mm/yyyy )} format
  * Example: timestampToTime(1489525200000, true) -> "2017-03-15 05:00:00"
  */
 export const timestampToTime = (timestamp, needTime = false, format = 1) => {
@@ -50,12 +50,12 @@ export const timestampToTime = (timestamp, needTime = false, format = 1) => {
 }
 
 /**
- * Usage: 将为日期转换时间戳
+ *  将为日期转换时间戳
  */
 export const timeTotimestamp = date => Date.parse(date)
 
 /**
- * Usage: 根据日期返回星期几
+ *  根据日期返回星期几
  * @param {传入的日期} dateString
  * Example: dateToWeek('2018-05-04') -> "星期五"
  */
@@ -71,7 +71,7 @@ export const dateToWeek = dateString => {
 }
 
 /**
- * 比较两个日期大小,如果1参早于2参则为true
+ * 比较两个日期大小,如果1参早于2参则为true,否则为false
  * @param {any} d1  较晚的日期 "2007-2-2 7:30"
  * @param {any} d2  较早的日期"2007-1-31 8:30"
  * @returns Boolean
@@ -126,4 +126,133 @@ export const getBetweenDateScope = (start, end) => {
         i += oneDay
     }
     return arr
+}
+
+/**
+ * 获取倒推两个时间段的日期
+ * @param count  指定几天之间, 默认是2，返回昨天和今天
+ * @param startDate  开始日期，默认是“今天”
+ * @returns targetDay:"2018-01-01", today:"2018-01-12"
+ *  Example:getDateRange(2) ->{today: "2018-05-05", targetDay: "2018-05-04"}
+ */
+export const getDateRange = (count = 2, start = getToday()) => {
+    let today = new Date(start)
+    let targetDay = new Date()
+    let oneDay = 24 * 60 * 60 * 1000
+    today.setTime(today.getTime())
+    targetDay.setTime(targetDay.getTime() - (oneDay * (count - 1)))
+    today = timestampToTime(today)
+    targetDay = timestampToTime(targetDay)
+    return {
+        today,
+        targetDay
+    }
+}
+
+/**
+ * [ 获取指定之前几个月的跨度，根据传入的参数Number，返回一个包含每个月所有日期的二维数组]
+ * @param  {[Number]} number [数字]
+ * @param  {[String]} date   [可选，日期（'2018-02-20'）]
+ * @return {[Array]}
+ *  Example:getPreMontAllDate(2) ->[ ["2018-04-01", ...., "2018-04-30"],["2018-03-01", ...."2018-03-31"]]
+ */
+export const getPreMontAllDate = (number = 0, date) => {
+    let result = []
+    let tempDate = date || timestampToTime(new Date())
+
+    for (let i = 0; i <= number; i++) {
+        let newDate = new Date(tempDate.replace(/\d+$/g, '1'))
+        let unixTemp = newDate.setMonth(newDate.getMonth() - i)
+        let tempArr = getMonthStartEnd(timestampToTime(new Date(unixTemp)))
+
+        let {
+            firstDay,
+            lastDay
+        } = tempArr
+        result.push(getBetweenDateScope(firstDay, lastDay))
+    }
+
+    if (number > 0) {
+        result.shift()
+    }
+    return result
+}
+
+/**
+ * 获取倒推几周的每个礼拜一和礼拜日
+ * @param count 传入几周就返回几周，默认是上一周
+ * @returns 返回数组
+ * Example:getPreWeeks(2)->[{monday: "2018-04-23", sunday: "2018-04-29"},{monday: "2018-04-16", sunday: "2018-04-22"}]
+ */
+export const getPreWeeks = (count = 1) => {
+    let thisWeek = 8 // 因为包含"今天"，所以第一周算8天
+    let days = []
+    let lastWeekDays = []
+
+    for (let i = 0; i < count; i++) {
+        days.push(thisWeek + 7 * i)
+    }
+    lastWeekDays = days.map(item => getDateRange(item).targetDay)
+    return lastWeekDays.map(item => {
+        const {
+            monday,
+            sunday
+        } = getWeekStartEnd(item)
+        return {
+            monday,
+            sunday
+        }
+    })
+}
+
+/**
+ * 获取当前日期所在星期的的礼拜一和礼拜日
+ * @param {string} [date='2018-01-01']  传入日期
+ * @returns  { monday, sunday } 礼拜一和礼拜日
+ * Example:getWeekStartEnd('2018-05-05')->{monday: "2018-04-30", sunday: "2018-05-06"}
+ */
+export const getWeekStartEnd = (date = '2018-01-01') => {
+    if (!date) return
+    let now = new Date(date)
+    let nowTime = now.getTime()
+    let day = now.getDay()
+    let oneDayTime = 24 * 60 * 60 * 1000
+    let MondayTime = nowTime - (day - 1) * oneDayTime
+    let SundayTime = nowTime + (7 - day) * oneDayTime
+    let monday = new Date(MondayTime) // 礼拜一
+    let sunday = new Date(SundayTime) // 礼拜日
+    monday.setTime(monday.getTime())
+    sunday.setTime(sunday.getTime())
+
+    monday = timestampToTime(monday)
+    sunday = timestampToTime(sunday)
+    return {
+        monday,
+        sunday
+    }
+}
+
+/**
+ * 获取当月的第一天和最后一天
+ * @param {string} [date='2018-01-01']  传入日期
+ * @returns {firstDay, lastDay}  第一天和最后一天
+ * Example: getMonthStartEnd('2018-05-05')->{firstDay: "2018-05-01", lastDay: "2018-05-31"}
+ */
+export const getMonthStartEnd = (date = '2018-01-01') => {
+    let firstDay = new Date(date) // 第一天
+    let lastDay = new Date(date) // 最后一天
+
+    firstDay.setDate(1)
+    lastDay.setMonth(lastDay.getMonth() + 1)
+    lastDay.setDate(0)
+
+    firstDay.setTime(firstDay.getTime())
+    lastDay.setTime(lastDay.getTime())
+
+    firstDay = timestampToTime(firstDay)
+    lastDay = timestampToTime(lastDay)
+    return {
+        firstDay,
+        lastDay
+    }
 }
