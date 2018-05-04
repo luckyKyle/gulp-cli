@@ -297,12 +297,14 @@ gulp.task('imageMin', cb => {
 
 gulp.task('default', () => {
     if (DEV) {
+         // 开发环境，编译处理
         runSequence(
             'sprite', ['sass', 'es', 'fileinclude', 'copyStatic'],
             'watcher',
             'server'
         )
     } else {
+        // 生产环境，压缩处理
         runSequence(['cssMin', 'jsMin', 'imageMin', 'htmlMin'])
     }
 })

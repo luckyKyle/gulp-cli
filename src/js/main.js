@@ -1,5 +1,7 @@
 // import { filterNonUnique } from './util/array'
 import { setStorage, getStorage, hasStorage, removeStorage, clearStorage } from './util/storage'
+import * as date from './util/date'
+
 // import 'babel-polyfill'
 
 let a = { a1: '111', a2: 222 }
@@ -31,5 +33,12 @@ btn5.onclick = function() {
     console.log(clearStorage())
 }
 
-// console.log(filterNonUnique([31, 1232, 1142, 3, 4, 4, 5, 6, 7, 9, 8]))
+// console.log(date.getColonTimeFromDate(new Date()))
+// console.log(date.getDaysDiffBetweenDates(new Date('2017-12-13'), new Date('2017-12-22')))
+// console.log(date.timestampToTime(1489525200000, true))
+// console.log(date.dateToWeek('2018-05-04'))
+// console.log(date.compareDate('2007-2-2 7:30', '2007-1-31 8:30'))
+// console.log(date.getToday())
+// console.log(date.getPreWeekDay(8))
+console.log(date.getBetweenDateScope('2018-04-29', '2018-04-29'))
 // console.log(c)
