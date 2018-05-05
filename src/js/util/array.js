@@ -33,7 +33,7 @@ export const chunk = (arr, size) => Array.from({
  *  从数组中移除falsey值
  * “使用Array.filter()筛选出 falsey 值 (false、null、 0、 ""、undefined和NaN).”
  * @param {需要传入的数组} arr
- * Example:  arrayMax([10, 1, 5]) arrayMin([10, 1, 5]) -> 1
+ * Example:  compact([0, 1, false, 2, '', 3, 'a', 'e'*23, NaN, 's', 34]) -> [ 1, 2, 3, 'a', 's', 34 ]
  */
 export const compact = arr => arr.filter(Boolean)
 
@@ -169,9 +169,7 @@ export const initial = arr => arr.slice(0, -1)
  * @param {起始值} start
  * Example:  initializeArrayWithValues(5, 2) -> [2,2,2,2,2]
  */
-export const initializeArrayWithRange = (end, start = 0) => Array.from({
-    length: end - start
-}).map((v, i) => i + start)
+export const initializeArrayWithRange = (end, start = 0) => Array.from({ length: end - start }).map((v, i) => i + start)
 
 /**
  *  初始化并填充具有指定值的数组。
@@ -234,10 +232,11 @@ export const pull = (arr, ...args) => {
  * @param {需要传入的规则} func
  * Example: remove([1, 2, 3, 4], n => n % 2 == 0) -> [2, 4]
  */
-export const remove = (arr, func) => Array.isArray(arr) ? arr.filter(func).reduce((acc, val) => {
-    arr.splice(arr.indexOf(val), 1)
-    return acc.concat(val)
-}, []) : []
+export const remove = (arr, func) =>
+    Array.isArray(arr) ? arr.filter(func).reduce((acc, val) => {
+        arr.splice(arr.indexOf(val), 1)
+        return acc.concat(val)
+    }, []) : []
 
 /**
  *  返回数组中的随机元素。
