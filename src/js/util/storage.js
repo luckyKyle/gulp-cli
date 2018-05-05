@@ -8,7 +8,7 @@
  * @param val 设置指定value值
  * Example: setStorage('key', { a1: '111', a2: 222 })-> key:{ a1: '111', a2: 222 }
  */
-export const setStorage = (key, val) => localStorage.setItem(key, JSON.stringify(val))
+export const set = (key, val) => localStorage.setItem(key, JSON.stringify(val))
 
 /**
  * 获取Storage
@@ -16,7 +16,7 @@ export const setStorage = (key, val) => localStorage.setItem(key, JSON.stringify
  * @returns  {any}
  * Example: getStorage('key')-> { a1: '111', a2: 222 }
  */
-export const getStorage = (key) => {
+export const get = (key) => {
     let storageVal = localStorage.getItem(key)
     storageVal = storageVal === 'undefined' ? '' : JSON.parse(storageVal)
     return storageVal
@@ -30,12 +30,12 @@ export const getStorage = (key) => {
  * Example: hasStorage('key')-> true
  * Example: hasStorage('key',{ a1: '111', a2: 222 })-> key:{ a1: '111', a2: 222 }
  */
-export const hasStorage = (key, defaultVal) => {
+export const has = (key, defaultVal) => {
     if (!defaultVal) {
-        return !Object.is(getStorage(key), null)
+        return !Object.is(get(key), null)
     }
-    setStorage(key, defaultVal)
-    return getStorage(key) ? getStorage(key) : defaultVal
+    set(key, defaultVal)
+    return get(key) ? set(key) : defaultVal
 }
 
 /**
@@ -43,10 +43,10 @@ export const hasStorage = (key, defaultVal) => {
  * @param key 移除指定key值
  * Example: removeStorage('key')
  */
-export const removeStorage = (key) => localStorage.removeItem(key)
+export const remove = (key) => localStorage.removeItem(key)
 
 /**
  * 清空所有Storage数据
  * Example: clearStorage()
  */
-export const clearStorage = () => localStorage.clear()
+export const clear = () => localStorage.clear()

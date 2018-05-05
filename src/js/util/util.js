@@ -1,14 +1,6 @@
-/**
- * Usage:回到顶部，优点使用浏览器刷新频率的requestAnimationFrame，很顺滑
- * Example: scrollToTop()
- */
-export const scrollToTop = () => {
-    const s = document.documentElement.scrollTop || document.body.scrollTop
-    if (s > 0) {
-        window.requestAnimationFrame(scrollToTop)
-        window.scrollTo(0, s - s / 8)
-    }
-}
+/***************************
+ * 处理Array相关的一些常规方法
+ ***************************/
 
 /**
  * Usage:复制到黏贴版
@@ -46,17 +38,6 @@ export const debounce = (fn, ms = 0) => {
         timeoutId = setTimeout(() => fn.apply(this, args), ms)
     }
 }
-
-/**
- * Usage: 获取url上的参数
- * @param {需要传入的url} url
- * @return Object  {key:value}
- * Example: getURLParameters('http://url.com/page?name=Adam&surname=Kyle') -> {name: 'Adam', surname: 'Kyle'}
- */
-export const getURLParameters = url =>
-    (url.match(/([^?=&]+)(=([^&]*))/g) || []).reduce(
-        (a, v) => ((a[v.slice(0, v.indexOf('='))] = v.slice(v.indexOf('=') + 1)), a), {}
-    )
 
 /**
  * Usage: promisify

@@ -6,17 +6,17 @@
  *  返回数组中的最大值
  * “将Math.max()与扩展运算符 (...) 结合使用以获取数组中的最大值。”
  * @param {需要传入的数组} arr
- * Example:  arrayMax([10, 1, 5]) -> 10
+ * Example:  max([10, 1, 5]) -> 10
  */
-export const arrayMax = arr => Math.max(...arr)
+export const max = arr => Math.max(...arr)
 
 /**
  *  返回数组中的最小值
  * “将Math.min()与扩展运算符 (...) 结合使用以获取数组中的最小值。”
  * @param {需要传入的数组} arr
- * Example: arrayMax([10, 1, 5]) arrayMin([10, 1, 5]) -> 1
+ * Example: min([10, 1, 5]) arrayMin([10, 1, 5]) -> 1
  */
-export const arrayMin = arr => Math.min(...arr)
+export const min = arr => Math.min(...arr)
 
 /**
  *  将数组块划分为指定大小的较小数组。

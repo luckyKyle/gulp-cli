@@ -28,6 +28,4 @@ export const getURLParameters = url =>
  * “使用window.location.href或window.location.replace()重定向到url。传递第二个参数以模拟链接单击 (true -默认值) 或 HTTP 重定向 (false).”
  * Example:redirect('https://google.com')
  */
-export const redirect = (url, asLink = true) => {
-    asLink ? window.location.href = url : window.location.replace(url)
-}
+export const redirect = (url, asLink = true) => asLink ? (window.location.href = url) : (window.location.replace(url))

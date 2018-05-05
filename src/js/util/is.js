@@ -1,5 +1,5 @@
 /***************************
- * 处理Array相关的一些常规方法
+ * 处理类型参数判断的方法
  ***************************/
 
 const toString = Object.prototype.toString
@@ -88,9 +88,25 @@ export const isEven = n => isNumber(n) && n % 2 === 0
  */
 export const isOdd = n => isNumber(n) && (n % 2 === 1 || n % 2 === -1)
 
-/***********************
- *  使用正则判断
- *********************/
+/**
+ *  检查设备是否是竖屏状态
+ */
+export const vertical = () => window.orientation === 180 || window.orientation === 0
+
+/**
+ *  检查设备是否是横屏状态
+ */
+export const landscape = () => window.orientation === 90 || window.orientation === -90
+
+/*****************************
+ * ↓↓↓↓↓↓↓ 使用正则判断 ↓↓↓↓↓↓↓
+ *****************************/
+
+export const reg = {}
+
+/**
+ *  相应的正则码
+ */
 const regexes = {
     affirmative: /^(?:1|t(?:rue)?|y(?:es)?|ok(?:ay)?)$/,
     alphaNumeric: /^[A-Za-z0-9]+$/,
@@ -109,17 +125,11 @@ const regexes = {
     usZipCode: /^[0-9]{5}(?:-[0-9]{4})?$/
 }
 
-// /**
-//  *  检查给定参数是否为正则
-//  */
-
-let isReg = {}
-
 const regexpCheck = (regexp, regexes) => {
-    isReg[regexp] = (val) => !isNaN(val) && regexes[regexp].test(val)
+    reg[regexp] = (val) => !isNaN(val) && regexes[regexp].test(val)
 }
 
-for (var regexp in regexes) {
+for (let regexp in regexes) {
     if (regexes.hasOwnProperty(regexp)) {
         regexpCheck(regexp, regexes)
     }
@@ -128,12 +138,12 @@ for (var regexp in regexes) {
 /**
  *  检查给定参数是否为IP
  */
-export const isIP = val => isReg.ipv4(val) || isReg.ipv6(val)
+export const IP = val => reg.ipv4(val) || reg.ipv6(val)
 
 /**
  *  检查给定参数是否为大写
  */
-export const isCapitalized = string => {
+export const capitalized = string => {
     if (!isString(string)) return
     let words = string.split(' ')
 

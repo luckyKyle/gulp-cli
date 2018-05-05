@@ -3,6 +3,9 @@ import * as storage from './util/storage'
 import * as date from './util/date'
 import * as string from './util/string'
 import * as array from './util/array'
+import * as is from './util/is'
+import * as util from './util/util'
+import * as object from './util/object'
 
 // import 'babel-polyfill'
 
@@ -23,27 +26,39 @@ let btn4 = document.querySelector('#btn4') // 移除
 let btn5 = document.querySelector('#btn5') // 清空
 
 btn1.onclick = function() {
-    storage.setStorage('test', c)
+    storage.set('test', c)
 }
 btn2.onclick = function() {
-    console.log(storage.getStorage('test'))
+    console.log(storage.get('test'))
 }
 
 btn3.onclick = function() {
-    console.log(storage.hasStorage('test'))
+    console.log(storage.has('test'))
 }
 
 btn4.onclick = function() {
-    console.log(storage.removeStorage('test'))
+    console.log(storage.remove('test'))
 }
 
 btn5.onclick = function() {
-    console.log(storage.clearStorage())
+    console.log(storage.clear())
 }
 
 console.log(date)
 console.log(string)
+console.log(object)
+console.log(util)
+console.log(is.reg)
 console.log(array.getProperties([{ key1: 'aaa', key2: 'bbb' }, { key1: 'AAA', key2: 'BBB' }], 'key1'))
+
+window.addEventListener('resize', util.debounce(() => {
+    console.log(window.innerWidth)
+    console.log(window.innerHeight)
+}, 1000))
+
+// util.debounce(() => {
+//     console.log('生效')
+// }, 2000)
 
 // console.log(date.getColonTimeFromDate())
 // console.log(date.getDaysDiffBetweenDates('2018-05-05', '2018-05-14'))
