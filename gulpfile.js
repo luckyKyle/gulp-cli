@@ -37,10 +37,11 @@ const json = require('rollup-plugin-json')
 const replace = require('rollup-plugin-replace')
 
 const DEST = 'dist'
-    /* -------------
-        开发环境
-    --------------- */
-    // 删除dist目录
+
+/* -------------
+    开发环境
+--------------- */
+// 删除dist目录
 if (DEV) { del.sync([DEST]) }
 
 // 编译scss
@@ -275,7 +276,7 @@ gulp.task('jsMin', cb => {
     pump([
         gulp.src('dist/js/**/*.js'),
         uglify(),
-        gulp.dest('./dist/js'),
+        gulp.dest('dist/js'),
         notify('js压缩完成')
     ], cb)
 })
@@ -283,21 +284,21 @@ gulp.task('jsMin', cb => {
 // 压缩图片
 gulp.task('imageMin', cb => {
     pump([
-        gulp.src('src/assets/img/**'),
+        gulp.src('dist/assets/img/**'),
         imageMin({
             optimizationLevel: 5, // 类型：Number  默认：3  取值范围：0-7（优化等级）
             progressive: true, // 类型：Boolean 默认：false 无损压缩jpg图片
             interlaced: true, // 类型：Boolean 默认：false 隔行扫描gif进行渲染
             multipass: true // 类型：Boolean 默认：false 多次优化svg直到完全优化
         }),
-        gulp.dest('dist/img'),
+        gulp.dest('dist/assets/img'),
         notify('img压缩完成')
     ], cb)
 })
 
 gulp.task('default', () => {
     if (DEV) {
-         // 开发环境，编译处理
+        // 开发环境，编译处理
         runSequence(
             'sprite', ['sass', 'es', 'fileinclude', 'copyStatic'],
             'watcher',

@@ -208,7 +208,7 @@ export const nthElement = (arr, n = 0) => (n > 0 ? arr.slice(n, n + 1) : arr.sli
  * @param {需要传入的数组} arr
  * Example: pick({ 'a': 1, 'b': '2', 'c': 3 }, ['a', 'c']) -> { 'a': 1, 'c': 3 }
  */
-export const pick = (obj, arr) => arr.reduce((acc, curr) => (curr in obj && (acc[curr] = obj[curr]), acc), {})
+export const pick = (obj, arr) => arr.reduce((acc, curr) => (curr in obj && ((acc[curr] = obj[curr]), acc)), {})
 
 /**
  * 对原始数组进行变异, 以筛选出指定的值。
