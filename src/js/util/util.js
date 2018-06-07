@@ -31,11 +31,13 @@ export const copyToClipboard = str => {
  * @param {延时时长} ms
  * Example:  window.addEventListener( 'resize', debounce(() => { console.log(window.innerWidth) console.log(window.innerHeight) }, 250) )
  */
-export const debounce = (fn, ms = 0) => {
-    let timeoutId
-    return function(...args) {
-        clearTimeout(timeoutId)
-        timeoutId = setTimeout(() => fn.apply(this, args), ms)
+export const debounce = (fn, delay = 0) => {
+    let timer
+    return function (...args) {
+        if (timer) {
+            clearTimeout(timer)
+        }
+        timer = setTimeout(() => fn.apply(this, args), delay)
     }
 }
 
