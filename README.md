@@ -8,7 +8,7 @@
 
 ### 目录结构
 
-![目录结构](https://p.qlogo.cn/qqmail_head/tNn4SGP0ryVIicCBlQwszz1MK4ibMnMgDQy8cCzmVntSES9q7YJ8ac2hJw4Vp1HMl93ImYauPDRTI/0)
+![目录结构](https://github.com/kpengWang/Blog-images-storage/blob/master/2018-07-15/0.png)
 
 主要分为三个目录文件夹
 + `src ` 开发环境资源文件
@@ -22,7 +22,7 @@
 + `gulpfile.js` gulp的stream配置文件
 + `typings.json` typings的配置文件
 
-![src目录说明](https://p.qlogo.cn/qqmail_head/g0P5PPXZdbjc1uFQD5ic4uEgIY6FsZGr1uGcUHaYyNaDr8KicyJ44VOE6BraPIeBtD/0)
+![src目录说明](https://github.com/kpengWang/Blog-images-storage/blob/master/2018-07-15/1.png)
 
 
 ### 开发环境
@@ -41,7 +41,7 @@
 
 根据下图不难看出，目前的模块化形式为`umd`标准，即兼容amd与conmmonjs的写法，可以解决跨平台的解决方案。
 最关键的是实现了tree-shaking, 即不会将整个import的js模块文件内容加入进来，而是仅将代码中使用到的方法导入
-![dev阶段](https://p.qlogo.cn/qqmail_head/Q3auHgzwzM6NZ3fLpAqBLovOO4mndJsCL7icnOibzBEcvdJbCHRqj0r2SYpde8wjbr1rnueGL6jJc/0)
+![dev阶段](https://github.com/kpengWang/Blog-images-storage/blob/master/2018-07-15/2.png)
 
 ---
 
@@ -51,11 +51,11 @@
 1. 压缩html,js,css以及图片静态资源
 2. 添加md5
 
-![压缩](https://p.qlogo.cn/qqmail_head/ajNVdqHZLLBz98Fd73icsa0Oh6QggWJgJePofyJVjcibqSibeicNtBddNrEWlOt7Friaem3ZicNV08AibQ/0)
+![压缩](https://github.com/kpengWang/Blog-images-storage/blob/master/2018-07-15/3.png)
 
 ### 引申
 #### typings实现智能
 这一点主要是针对编辑器，[Typings实现智能](http://www.cnblogs.com/Leo_wl/p/5455619.html)
 
-![typings](https://p.qlogo.cn/qqmail_head/tNn4SGP0ryVIicCBlQwszz1MK4ibMnMgDQy8cCzmVntSEcOVbjp89LI3fNib4xW2T5zd91OE869MMM/0)
+![typings](https://github.com/kpengWang/Blog-images-storage/blob/master/2018-07-15/4.gif)
 
