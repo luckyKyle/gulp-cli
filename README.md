@@ -51,11 +51,11 @@
 1. 压缩html,js,css以及图片静态资源
 2. 添加md5
 
-![压缩](https://github.com/kpengWang/Blog-images-storage/blob/master/2018-07-15/3.png)
+![压缩](https://github.com/kpengWang/Blog-images-storage/blob/master/2018-07-15/4.png)
 
 ### 引申
 #### typings实现智能
 这一点主要是针对编辑器，[Typings实现智能](http://www.cnblogs.com/Leo_wl/p/5455619.html)
 
-![typings](https://github.com/kpengWang/Blog-images-storage/blob/master/2018-07-15/4.gif)
+![typings](https://github.com/kpengWang/Blog-images-storage/blob/master/2018-07-15/5.gif)
 
