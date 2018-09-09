@@ -11,19 +11,19 @@
  * Example:getRadomString(5,3) -> ["th5PP", "MaTWd", "c6dAc"]
  */
 export const getRadomString = (len = 6, length) => {
-    let chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678'
-    let pwd = ''
+  let chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678'
+  let pwd = ''
 
-    for (let i = 0; i < len; i++) {
-        pwd += chars.charAt(Math.floor(Math.random() * chars.length))
-    }
+  for (let i = 0; i < len; i++) {
+    pwd += chars.charAt(Math.floor(Math.random() * chars.length))
+  }
 
-    if (length) { // 如果带二参，返回为数组
-        let arr = []
-        for (let j = 0; j < length; j++) {
-            arr.push(getRadomString(len))
-        }
-        return arr
+  if (length) { // 如果带二参，返回为数组
+    let arr = []
+    for (let j = 0; j < length; j++) {
+      arr.push(getRadomString(len))
     }
-    return pwd
+    return arr
+  }
+  return pwd
 }

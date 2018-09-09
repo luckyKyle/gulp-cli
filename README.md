@@ -32,7 +32,7 @@
 2. **Babel** (对应的sourcemap映射)
 3. **sprite雪碧图**（自动生成相应的背景图片定位scss文件）
 4. **includefile**
-5. **集成typings **(jquery,lodash语法提示)
+5. **集成typings**(jquery,lodash语法提示)
 6. **集成art-template**
 7. **集成Rollup**（主要使用tree-shaking摇树功能）
 8. **集成eslint**
@@ -40,7 +40,7 @@
 10. **热更新**
 
 根据下图不难看出，目前的模块化形式为`umd`标准，即兼容amd与conmmonjs的写法，可以解决跨平台的解决方案。
-最关键的是实现了tree-shaking, 即不会将整个import的js模块文件内容加入进来，而是仅将代码中使用到的方法导入
+最关键的是实现了`tree-shaking`, 即不会将整个import的js模块文件内容加入进来，而是仅将代码中使用到的方法导入，使得压缩包内容
 ![dev阶段](https://github.com/kpengWang/Blog-images-storage/blob/master/2018-07-15/2.png)
 
 ---
