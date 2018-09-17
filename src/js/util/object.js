@@ -31,7 +31,7 @@ export const deepClone = obj => {
   }
   const targetObj = Array.isArray(obj) ? [] : {}
   for (let key in obj) {
-    //只对对象自有属性进行拷贝
+    // 只对对象自有属性进行拷贝
     if (obj.hasOwnProperty(key)) {
       if (obj[key] && typeof obj[key] === 'object') {
         targetObj[key] = deepClone(obj[key])
@@ -43,15 +43,10 @@ export const deepClone = obj => {
   return targetObj
 }
 
-
-
-
 // ==================待整理
 // ==================待整理
 // ==================待整理
 // ==================待整理
-
-
 export function parseTime(time, cFormat) {
   if (arguments.length === 0) {
     return null
@@ -73,7 +68,7 @@ export function parseTime(time, cFormat) {
     s: date.getSeconds(),
     a: date.getDay()
   }
-  const time_str = format.replace(/{(y|m|d|h|i|s|a)+}/g, (result, key) => {
+  const timeStr = format.replace(/{(y|m|d|h|i|s|a)+}/g, (result, key) => {
     let value = formatObj[key]
     if (key === 'a') return ['一', '二', '三', '四', '五', '六', '日'][value - 1]
     if (result.length > 0 && value < 10) {
@@ -81,7 +76,7 @@ export function parseTime(time, cFormat) {
     }
     return value || 0
   })
-  return time_str
+  return timeStr
 }
 
 export function formatTime(time, option) {
@@ -123,21 +118,6 @@ export function getQueryObject(url) {
   return obj
 }
 
-/**
- *get getByteLen
- * @param {Sting} val input value
- * @returns {number} output value
- */
-export function getByteLen(val) {
-  let len = 0
-  for (let i = 0; i < val.length; i++) {
-    if (val[i].match(/[^\x00-\xff]/ig) != null) {
-      len += 1
-    } else { len += 0.5 }
-  }
-  return Math.floor(len)
-}
-
 export function cleanArray(actual) {
   const newArray = []
   for (let i = 0; i < actual.length; i++) {
@@ -156,7 +136,6 @@ export function param(json) {
             encodeURIComponent(json[key])
   })).join('&')
 }
-
 
 export function html2Text(val) {
   const div = document.createElement('div')
