@@ -79,12 +79,12 @@ gulp.task('es', async cb => {
                 main: true, // Default: true
                 browser: true // Default: false
             }),
-            eslint({
-                throwOnError: true,
-                throwOnWarning: true,
-                include: ['src/**/*.js'],
-                exclude: ['node_modules/**']
-            }),
+            // eslint({
+            //     throwOnError: true,
+            //     throwOnWarning: true,
+            //     include: ['src/**/*.js'],
+            //     exclude: ['node_modules/**']
+            // }),
             commonjs(),
             json(),
             babel({
@@ -195,7 +195,7 @@ gulp.task('fileinclude', cb => {
 //  启动本地服务 并解决跨域
 gulp.task('server', () => {
     connect.server({
-        host: '', // 本地host，默认为“loacalhost”
+        host: '192.168.1.26', // 本地host，默认为“loacalhost”
         port: 9001, // 端口
         root: 'dist', // 根目录
         livereload: true // 自动刷新
