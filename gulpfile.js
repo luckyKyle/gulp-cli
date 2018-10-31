@@ -79,12 +79,12 @@ gulp.task('es', async cb => {
                 main: true, // Default: true
                 browser: true // Default: false
             }),
-            // eslint({
-            //     throwOnError: true,
-            //     throwOnWarning: true,
-            //     include: ['src/**/*.js'],
-            //     exclude: ['node_modules/**']
-            // }),
+            eslint({
+                throwOnError: true,
+                throwOnWarning: true,
+                include: ['src/**/*.js'],
+                exclude: ['node_modules/**']
+            }),
             commonjs(),
             json(),
             babel({
@@ -107,7 +107,7 @@ gulp.task('es', async cb => {
             'jquery': '$' // 告诉rollup 全局变量$即是jquery
         }
     })
-
+    
     return gulp.src('./dist/js/bundle.js')
         .pipe(gulp.dest('dist/js'))
         .pipe(connect.reload())
