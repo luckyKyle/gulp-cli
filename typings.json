@@ -1,5 +1,9 @@
 {
   "globalDependencies": {
     "jquery": "registry:dt/jquery#1.10.0+20170310222111"
+  },
+  "dependencies": {
+    "lodash": "registry:npm/lodash#4.0.0+20161015015725",
+    "stylus": "registry:dt/stylus#0.48.1+20161128184045"
   }
 }
