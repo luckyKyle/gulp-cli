@@ -1,20 +1,20 @@
+import { baseUrl, ERROR_OK } from './config'
 class Api {
   constructor(baseUrl) {
     this.baseUrl = baseUrl
+    this.def = $.Deferred()
   }
   post(url, data) {
-    let def = $.Deferred()
-    $.post(url, data).then(data => def.resolve(data))
-    return def
+    url = this.baseUrl + url
+    $.post(url, data).then(data => this.def.resolve(data))
+    return this.def
   }
   get(url, data) {
-    let def = $.Deferred()
-    $.get(url, data).then(data => def.resolve(data))
-    return def
+    url = this.baseUrl + url
+    $.get(url, data).then(data => this.def.resolve(data))
+    return this.def
   }
   jsonp(url, data) {
-    let def = $.Deferred()
-    const ErrorOk = 10000 // 错误码
     $.ajax({
       url: this.baseUrl + url,
       type: 'get',
@@ -22,14 +22,15 @@ class Api {
       jsonp: 'callback',
       data: data
     }).then(res => {
-      if (res.code !== ErrorOk) {
-        def.reject(res)
+      if (res.code !== ERROR_OK) {
+        this.def.reject(res)
       }
-      def.resolve(res)
+      this.def.resolve(res)
     })
-    return def
+    return this.def
   }
 
+  // 公共参数
   baseParams(params) {
     const base = {
       // do something
@@ -38,4 +39,4 @@ class Api {
   }
 }
 
-export default new Api()
+export default new Api(baseUrl)

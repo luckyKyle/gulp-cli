@@ -5,6 +5,20 @@
 <body>
   @@include('include/head.html')
 
+  <div id="container">
+    <script type="text/html" id="tplOrdertList">
+      {{each $data item index}}
+      <p>id:{{item.id}}</p>
+      <p>code:{{item.code}}</p>
+      <ul>
+        {{each item.list value j}}
+          <li>{{value.hospital}}</li>
+        {{/each}}
+      </ul>
+      {{/each}}
+    </script>
+  </div>
+
   @@include('include/foot.html')
 </body>
 
