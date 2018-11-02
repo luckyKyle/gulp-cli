@@ -1,20 +1,3 @@
-  //Usage: 清除浮动
-  //Example @include clearfix()
-  @mixin clearfix() {
-
-    &:before,
-    &:after {
-      content: "";
-      display: table;
-      *zoom: 1;
-    }
-
-    &:after {
-      clear: both;
-      overflow: hidden;
-    }
-  }
-
   //Usage: 不透明度opacity
   //Example @include opacity(20)
   @mixin opacity($opacity:50) {
@@ -29,29 +12,6 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 100% - $substract;
-  }
-
-  //Usage:浏览器前缀
-  //Example:@include css3(transition, 0.5s)
-  @mixin css3($property, $value) {
-
-    @each $prefix in -webkit-,
-    -moz-,
-    -ms-,
-    -o-,
-    '' {
-      #{$prefix}#{$property}: $value;
-    }
-  }
-
-  //Usage:Retina图片
-  //Example:@include css3(transition, 0.5s)
-  @mixin image-2x($image, $width, $height) {
-    @media (min--moz-device-pixel-ratio: 1.3), (-o-min-device-pixel-ratio: 2.6/2), (-webkit-min-device-pixel-ratio: 1.3), (min-device-pixel-ratio: 1.3), (min-resolution: 1.3dppx) {
-      /* on retina, use image that's scaled by 2 */
-      background-image: url($image);
-      background-size: $width $height;
-    }
   }
 
   //Usage:隐藏文字
@@ -73,7 +33,7 @@
 
   //Usage: 正三角
   //Example: @include regulaTriangle(top,red);  
-  @mixin regulaTriangle($derection:bottom, $color: #000, $width: 20px) {
+  @mixin regula-triangle($derection:bottom, $color: #000, $width: 10px) {
     @extend %triangleBase;
     border-width: $width;
 
@@ -104,51 +64,35 @@
 
   //Usage:直角三角形
   //Example：@include right-angledTriangle(1,red);  
-  @mixin right-angledTriangle ($derection:1, $color:#000, $width: 20px, $opacity:transparent, $border:dashed) {
-    @extend %triangleBase;
+  @mixin right-triangle ($derection:bottom, $color:#000, $width: 10px, $opacity:transparent, $border:dashed) {
+    // @extend %triangleBase;
+    width: 0;
+    height: 0;
     border-width: $width;
 
-    //向右  
-    @if $derection==1 {
-      border-style: $border dashed dashed $border;
-      border-color: $color $opacity $opacity $color;
-    }
-
-    //向右  
-    @if $derection==2 {
-      border-style: $border $border dashed dashed;
-      border-color: $color $color $opacity $opacity;
-    }
-
-    //向右  
-    @if $derection==3 {
+    //向上  
+    @if $derection==top {
       border-style: dashed $border $border dashed;
       border-color: $opacity $color $color $opacity;
     }
 
     //向右  
-    @if $derection==4 {
+    @if $derection==right {
+      border-style: $border dashed dashed $border;
+      border-color: $color $opacity $opacity $color;
+    }
+
+    //向下  
+    @if $derection==bottom {
       border-style: dashed dashed $border $border;
       border-color: $opacity $opacity $color $color;
     }
-  }
 
-  //Usage:动画keyframes生成
-  //Example： @include keyframes(动画名称)
-  @mixin keyframes($animationName) {
-    @-webkit-keyframes #{$animationName} {
-      @content;
+    //向左  
+    @if $derection==left {
+      border-style: $border $border dashed dashed;
+      border-color: $color $color $opacity $opacity;
     }
 
-    @-moz-keyframes #{$animationName} {
-      @content;
-    }
 
-    @-o-keyframes #{$animationName} {
-      @content;
-    }
-
-    @keyframes #{$animationName} {
-      @content;
-    }
   }
