@@ -1,22 +1,12 @@
-  //Usage:  圆角
-  //Example @include rounded(10px)
-  @mixin rounded($radius) {
-    -webkit-border-radius: $radius;
-    -moz-border-radius: $radius;
-    border-radius: $radius;
-  }
-
   //Usage: 清除浮动
   //Example @include clearfix()
-  @mixin clearfix {
-    @if $legacy-support-for-ie {
-      *zoom: 1;
-    }
+  @mixin clearfix() {
 
     &:before,
     &:after {
       content: "";
       display: table;
+      *zoom: 1;
     }
 
     &:after {
@@ -29,10 +19,7 @@
   //Example @include opacity(20)
   @mixin opacity($opacity:50) {
     opacity: $opacity / 100;
-
-    @if $filter {
-      filter: alpha(opacity=$opacity);
-    }
+    filter: alpha(opacity=$opacity);
   }
 
   //Usage: 截取文本text-overflow ，$substract`单位为% 
@@ -42,17 +29,6 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 100% - $substract;
-  }
-
-  //Usage: 最小高度min-height
-  //Example:  @include  min-height(100px)
-  @mixin min-height($height) {
-    min-height: $height;
-    height: auto !important;
-
-    @if $legacy-support-for-ie {
-      _height: $height;
-    }
   }
 
   //Usage:浏览器前缀
@@ -85,6 +61,15 @@
     text-indent: -9000px;
     display: block;
   }
+
+  %triangleBase {
+    _font-size: 0;
+    _line-height: 0;
+    _overflow: hidden;
+    width: 0;
+    height: 0;
+  }
+
 
   //Usage: 正三角
   //Example: @include regulaTriangle(top,red);  

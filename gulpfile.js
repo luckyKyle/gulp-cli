@@ -141,7 +141,7 @@ gulp.task('sprite', cb => {
   // 输出css
   const cssStream = pump([
     spriteStream.css,
-    gulp.dest('src/scss/common'),
+    gulp.dest('src/scss/base'),
     connect.reload(),
     notify('图片合并完成')
   ])

@@ -1,0 +1,13 @@
+@import './base/mixin';
+
+#container {
+  // @include bg-
+  @include opacity(20);
+  position: relative;
+
+  &::after {
+    @include right-angledTriangle();
+    content: '';
+    position: absolute;
+  }
+}
