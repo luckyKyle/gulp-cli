@@ -256,12 +256,6 @@ gulp.task('htmlMin', cb => {
     minifyJS: true, // 压缩页面JS
     minifyCSS: true // 压缩页面CSS
   }
-  pump([
-    gulp.src('dist/index.html'),
-    htmlMin(option),
-    rev(),
-    gulp.dest('dist')
-  ])
   pump(
     [
       gulp.src('dist/view/**/*.html'),
