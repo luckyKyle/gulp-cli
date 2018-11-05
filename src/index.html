@@ -4,15 +4,14 @@
 
 <body>
   @@include('include/head.html')
-
   <div id="container">
     <script type="text/html" id="tplOrdertList">
       {{each $data item index}}
       <p class="">id:{{item.id}}</p>
       <p>code:{{item.code}}</p>
-      <ul>
+      <ul class="list">
         {{each item.list value j}}
-          <li>{{value.hospital}}</li>
+          <li class="item">{{value.hospital}}</li>
         {{/each}}
       </ul>
       {{/each}}

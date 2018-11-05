@@ -1,5 +1,6 @@
 @import './base/mixin';
 
+
 #container {
   // @include bg-
   position: relative;
@@ -8,5 +9,14 @@
     @include right-triangle(top);
     content: '';
     position: absolute;
+  }
+
+  .list {
+    width: 3.75rem;
+    background: #f6f6f6;
+
+    .item {
+      background: red;
+    }
   }
 }
